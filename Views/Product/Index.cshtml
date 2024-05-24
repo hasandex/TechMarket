@@ -1,0 +1,83 @@
+﻿@model IEnumerable<Product>
+
+@{
+    ViewData["Title"] = "Products";
+}
+<div class="row">
+    <div class="container mb-4 col-2">
+
+        <a asp-action="Create" class="btn btn-success"> Add Product </a>
+
+    </div>
+</div>
+<div class="row">
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["Success"]
+        </div>
+    }
+    @if (TempData["CartSucssess"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["CartSucssess"]
+        </div>
+    }
+</div>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-warning" role="alert">
+        No Products were added yet!
+    </div>
+}
+else
+{
+    <table class="table table-hover" id="page">
+        <thead>
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Description</th>
+                <th scope="col">Category</th>
+                <th scope="col">Price</th>
+                <th scope="col">Cover</th>
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var product in Model)
+            {
+                <tr class="table-primary">
+                    <td scope="row">@product.Name</td>
+                    <td style="width:500px">@product.Description</td>
+                    <td>@product.Category.Name</td>
+                    <td>@product.Price</td>
+                    <td>
+                        <img src="@($"{Settings.ItemImageStorePath}/{@product.Cover}")" class="rounded" style="width:100px;height:100px;" />
+                    </td>
+                    <td>
+                        <a asp-action="Update" asp-route-id="@product.Id" class="btn btn-info rounded rounded-3 me-4"> <i class="bi bi-pencil-square"></i> </a>
+                        <a href="javascript:;"
+                           class="js-delete btn btn-danger rounded rounded-3" data-id="@product.Id">
+                            <i class="bi bi-trash"></i>
+                        </a>
+                    </td>
+                    @* <td>
+                        <form method="post" asp-controller="Cart" asp-action="Add"> 
+                            <input type="hidden" name="itemId" value="@product.Id" />
+                            <div class="input-group">
+                                <input type="number" name="quantity" class="form-control" style="width:50px;" min="1" value="1" />
+                                <button id="addItem" type="submit" class="btn btn-info rounded rounded-3 ms-2">
+                                    <i class="bi bi-cart-check"></i>
+                                </button>
+                            </div>
+                        </form>
+                    </td> *@
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+@section Scripts {
+    <script src="~/js/delete-product.js"></script>
+}

@@ -1,0 +1,11 @@
+﻿global using Microsoft.EntityFrameworkCore;
+global using Microsoft.AspNetCore.Identity;
+global using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+global using TechMarket.Data;
+global using System.ComponentModel.DataAnnotations;
+global using TechMarket.Services.IServices;
+global using TechMarket.CustomDataAnnotation;
+global using TechMarket.ViewModel;
+global using TechMarket.Models;
+global using TechMarket.Repo.IRepo;
+global using TechMarket.Services;
