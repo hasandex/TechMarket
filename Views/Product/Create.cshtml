@@ -4,7 +4,7 @@
     ViewData["Title"] = "Create Product";
 }
 
-<form asp-action="Create" enctype="multipart/form-data">
+<form asp-action="Create" enctype="multipart/form-data" id="createForm">
     <div>
         <label asp-for="Name" class="form-label mt-4"></label>
         <input asp-for="Name" type="text" class="form-control">
@@ -29,14 +29,34 @@
     <div>
         <label asp-for="FormFile" class="form-label mt-4"></label>
         <input asp-for="FormFile" class="form-control" id="FormFile" type="file">
+        <span asp-validation-for="FormFile" class="text text-danger"> </span>
     </div>
     <div class="text-center mt-4">
         <img src="" class="img-preview rounded d-none" alt="" style="width:200px;height:200px;">
     </div>
-    <button type="submit" class="btn btn-primary">Create</button>
+    <button type="submit" class="btn btn-outline-primary">Create</button>
     </fieldset>
 </form>
+<partial name="_ConfirmationModal" />
 
 @section Scripts {
     <script src="~/js/image_preview.js"></script>
+    <script>
+        document.getElementById('createForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+            $('#confirmationModal').modal('show');
+        });
+
+        document.getElementById('confirmCreate').addEventListener('click', function () {
+            document.getElementById('createForm').submit();
+        });
+        document.querySelector('#confirmationModal .btn-secondary').addEventListener('click', function () {
+            $('#confirmationModal').modal('hide');
+        });
+
+        document.querySelector('#confirmationModal .close').addEventListener('click', function () {
+            $('#confirmationModal').modal('hide');
+        });
+
+    </script>
 }

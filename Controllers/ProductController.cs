@@ -4,19 +4,22 @@ using TechMarket.Repo.IRepo;
 
 namespace TechMarket.Controllers
 {
-    [Authorize(Roles = $"{ClsRoles.roleUser},{ClsRoles.roleAdmin}" )]
+    //[Authorize(Roles = $"{ClsRoles.roleUser},{ClsRoles.roleAdmin}")]
+    [Authorize]
     public class ProductController : Controller
     {
         private readonly IProductRepo _productRepo;
         private readonly ICategoryRepo _categoryRepo;
-        public ProductController(IProductRepo productRepo, ICategoryRepo categoryRepo)
+        private readonly IUserService _userService;
+        public ProductController(IProductRepo productRepo, ICategoryRepo categoryRepo,IUserService userService)
         {
             _productRepo = productRepo;
             _categoryRepo = categoryRepo;
+            _userService = userService;
         }
         public async Task<IActionResult> Index()
         {
-            return View(await _productRepo.GetAll());
+            return View(await _productRepo.GetAll(_userService.GetUserId()));
         }
         [HttpGet]
         public IActionResult Create()
@@ -95,6 +98,16 @@ namespace TechMarket.Controllers
                 return BadRequest();
             }
             return RedirectToAction("Index");
-        }//
+        }
+        [AllowAnonymous]
+        public IActionResult Details(int id)
+        {
+            var product = _productRepo.GetById(id);
+            if (product == null)
+            {
+                return NotFound();
+            }
+            return View(product);
+        }
     }
 }

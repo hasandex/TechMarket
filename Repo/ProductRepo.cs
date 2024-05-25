@@ -21,6 +21,12 @@ namespace TechMarket.Repo
         {
             return await _appDbContext.Products.Include(i => i.Category).AsNoTracking().ToListAsync();
         }
+        public async Task<IEnumerable<Product>> GetAll(string userId)
+        {
+            return await _appDbContext.Products.Include(p => p.Category)
+                .Where(p => p.UserId == userId)
+                .AsNoTracking().ToListAsync();
+        }
         public Product? GetById(int id)
         {
             var item = _appDbContext.Products.FirstOrDefault(i => i.Id == id);
@@ -81,5 +87,6 @@ namespace TechMarket.Repo
                 return 0;
             }
         }
+ 
     }
 }

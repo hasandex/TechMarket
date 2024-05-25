@@ -10,6 +10,12 @@ namespace TechMarket.Repo
         {
             _appDbContext = appDbContext;
         }
+
+        public IEnumerable<Category> GetCategories()
+        {
+           return _appDbContext.Categories.ToList();
+        }
+
         public IEnumerable<SelectListItem> GetCategoriesSelectList()
         {
             return _appDbContext.Categories.Select(c => new SelectListItem { Value = c.Id.ToString(), Text = c.Name });
