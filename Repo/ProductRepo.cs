@@ -17,9 +17,16 @@ namespace TechMarket.Repo
             _imageService = imageService;
             _userService = userService;
         }
+        public async Task<IEnumerable<Product>> GetAllAvailable()
+        {
+            return await _appDbContext.Products.Include(p => p.Category)
+                .Where(p=>p.IsAvailable == true)
+                .AsNoTracking()
+                .ToListAsync();
+        }
         public async Task<IEnumerable<Product>> GetAll()
         {
-            return await _appDbContext.Products.Include(i => i.Category).AsNoTracking().ToListAsync();
+            return await _appDbContext.Products.Include(p => p.Category).AsNoTracking().ToListAsync();
         }
         public async Task<IEnumerable<Product>> GetAll(string userId)
         {
@@ -29,10 +36,10 @@ namespace TechMarket.Repo
         }
         public Product? GetById(int id)
         {
-            var item = _appDbContext.Products.FirstOrDefault(i => i.Id == id);
-            if (item != null)
+            var product = _appDbContext.Products.FirstOrDefault(p => p.Id == id);
+            if (product != null)
             {
-                return item;
+                return product;
             }
             return null;
         }
@@ -87,6 +94,15 @@ namespace TechMarket.Repo
                 return 0;
             }
         }
- 
+        public int MakeAvailable(int id)
+        {
+            var product = GetById(id);
+            if (product == null)
+            {
+                return -1;
+            }
+            product.IsAvailable = true;
+            return _appDbContext.SaveChanges();
+        }
     }
 }

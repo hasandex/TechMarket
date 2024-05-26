@@ -19,7 +19,7 @@ namespace TechMarket.Controllers
 
         public async Task<IActionResult> Index(string? seachName, string? categoryName, int pg = 1)
         {
-            var products = await _productRepo.GetAll();
+            var products = await _productRepo.GetAllAvailable();
             if (!string.IsNullOrEmpty(seachName))
             {
                 products = products.Where(p => p.Name.ToLower().Contains(seachName.ToLower())

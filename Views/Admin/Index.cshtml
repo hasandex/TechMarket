@@ -1,0 +1,80 @@
+﻿@model IEnumerable<Product>
+@{
+    ViewData["Title"] = "Admin";
+}
+
+@if (!Model.Any())
+{
+    <div class="alert alert-warning">
+        <h3>No Products in out system</h3>
+    </div>
+}
+else
+{
+    <table class="table table-hover" id="page">
+      <thead>
+          <tr>
+              <th scope="col">Count</th>
+              <th scope="col">User</th>
+              <th scope="col">Product Name</th>
+              <th scope="col">Price</th>
+                <th scope="col" style="padding-left:45px;">Cover</th>
+              <th scope="col">Details</th>
+                <th scope="col" style="padding-left:45px;">Approve</th>
+                <th scope="col" style="padding-left:45px;">Reject</th>
+              <th scope="col">Status</th>
+          </tr>
+      </thead>
+      <tbody>
+          @{
+              var count = 0;
+              }
+          @foreach (var product in Model)
+            {
+                var isAvailable = product.IsAvailable;
+                count = count + 1;
+                var userInfo = await UserManager.FindByIdAsync(product.UserId);
+                var index = userInfo.UserName.IndexOf('@');
+                var userName = userInfo.UserName.Substring(0, index);
+                <tr>
+                    <td>@count</td>
+                    <td>@userName</td>
+                    <td>@product.Name</td>
+                    <td>@product.Price</td>
+                    <td>
+                        <img src="@($"{Settings.ItemImageStorePath}/{@product.Cover}")" class="rounded" style="width:100px;height:100px;" />
+                    </td>
+                    <td>
+                        <a asp-controller="Product" asp-action="Details" asp-route-id="@product.Id">
+                            Show More
+                        </a>
+                    </td>
+                    <td>
+                        <a class="btn btn-outline-info" asp-action="MakeProductAvailable" asp-route-id="@product.Id">
+                            Approve
+                        </a>
+                    </td>
+                    <td>
+                        <a class="btn btn-outline-danger" asp-action="RejectProduct" asp-route-id="@product.Id">
+                            Reject
+                        </a>
+                    </td>
+
+                    @if (isAvailable)
+                    {
+                        <td class="text text-info">
+                            Is Available
+                        </td>
+                    }
+                    else
+                    {
+                        <td class="text text-danger">
+                           Not Available
+                        </td>
+                    }
+                </tr>
+            }
+      </tbody>
+      
+  </table>
+}
