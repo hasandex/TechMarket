@@ -1,4 +1,6 @@
-﻿namespace TechMarket.CustomDataAnnotation
+﻿using System.Drawing;
+
+namespace TechMarket.CustomDataAnnotation
 {
     public class MaxFileSizeAttribute : ValidationAttribute
     {
@@ -12,13 +14,13 @@
         protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
         {
             var file = value as IFormFile;
-            if (file != null)
-            {
-                if (file.Length > _maxFileSize)
+                if (file != null)
                 {
-                    return new ValidationResult(errorMessage: $"Max file size allowed is {_maxFileSize}");
+                    if (file.Length > _maxFileSize)
+                    {
+                        return new ValidationResult(errorMessage: $"Max file size allowed is {_maxFileSize}");
+                    }
                 }
-            }
             return ValidationResult.Success;
         }
     }

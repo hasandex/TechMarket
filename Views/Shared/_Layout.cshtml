@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - TechMarket</title>
-    <link rel="stylesheet" href="~/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/TechMarket.styles.css" asp-append-version="true" />
@@ -45,11 +45,14 @@
                             </li>
                         }                      
                     </ul>
-                    <form asp-controller="Home" asp-action="Index" class="d-flex" method="get">
-                        <input name="seachName" class="form-control me-2" type="search" placeholder="Search" aria-label="Search"
-                               value="@ViewBag.seachName">
-                        <button class="btn btn-outline-success" type="submit">Search</button>
-                    </form>
+                    <div class="p-2">
+                        <form asp-controller="Home" asp-action="Index" class="d-flex" method="get">
+                            <input name="seachName" class="form-control me-2" type="search" placeholder="Search" aria-label="Search"
+                                   value="@ViewBag.seachName">
+                            <button class="btn btn-outline-success" type="submit">Search</button>
+                        </form>
+                    </div>
+                   
                     <partial name="_LoginPartial" />
                 </div>
             </div>

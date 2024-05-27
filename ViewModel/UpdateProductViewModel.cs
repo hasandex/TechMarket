@@ -11,8 +11,8 @@ namespace TechMarket.ViewModel
         public string Description { get; set; } = string.Empty;
         [Range(0, int.MaxValue, ErrorMessage = "Please enter a positive number")]
         public double Price { get; set; } = 0;
-        [MaxFileSize(Settings.MaxImgSize)]
         [AllowedExtension(Settings.AllowedImgExtensions)]
+        [MaxFileSize(Settings.MaxImgSize)]
         public IFormFile? FormFile { get; set; }
         public string? Cover { get; set; }
         public int CategoryId { get; set; }

@@ -17,7 +17,7 @@
             {
                 if (!_allowedExtension.Split(',').Contains(Path.GetExtension(file.FileName)))
                 {
-                    return new ValidationResult(errorMessage: $"Allowed file extensions are : {_allowedExtension.Split(',')}");
+                    return new ValidationResult(errorMessage: $"Allowed file extensions are : {_allowedExtension}");
                 }
             }
             return ValidationResult.Success;

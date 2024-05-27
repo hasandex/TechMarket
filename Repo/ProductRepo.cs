@@ -17,6 +17,7 @@ namespace TechMarket.Repo
             _imageService = imageService;
             _userService = userService;
         }
+        //this method for Home Index
         public async Task<IEnumerable<Product>> GetAllAvailable()
         {
             return await _appDbContext.Products.Include(p => p.Category)
@@ -24,10 +25,12 @@ namespace TechMarket.Repo
                 .AsNoTracking()
                 .ToListAsync();
         }
+        //this method for Admin Index
         public async Task<IEnumerable<Product>> GetAll()
         {
             return await _appDbContext.Products.Include(p => p.Category).AsNoTracking().ToListAsync();
         }
+        //this method for User Index
         public async Task<IEnumerable<Product>> GetAll(string userId)
         {
             return await _appDbContext.Products.Include(p => p.Category)
@@ -36,7 +39,7 @@ namespace TechMarket.Repo
         }
         public Product? GetById(int id)
         {
-            var product = _appDbContext.Products.FirstOrDefault(p => p.Id == id);
+            var product = _appDbContext.Products.Include(p=>p.Category).FirstOrDefault(p => p.Id == id);
             if (product != null)
             {
                 return product;

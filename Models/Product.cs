@@ -6,7 +6,7 @@ namespace TechMarket.Models
     {
         public int Id { get; set; }
         public string UserId { get; set; }
-        [MaxLength(100)]
+        [MaxLength(25)]
         public string Name { get; set; }
         [MaxLength(500)]
         public string Description { get; set; }

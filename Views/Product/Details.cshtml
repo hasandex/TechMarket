@@ -8,9 +8,12 @@
         <div class="row">
             <div class="col-md-8 px-5 py-4 d-flex flex-column justify-content-between">
                 <div>
-                    <h1 class="text-success fw-bolder">@Model.Name</h1>
-                    <span class="badge bg-info fs-5 mb-4">@Model.Category?.Name</span>
+                    <h1 class="text-dark fw-bolder">@Model.Name</h1>
+                    <span class="badge bg-info fs-5 mb-4">@Model.Category.Name</span>
                     <p class="fs-5">@Model.Description</p>
+                </div>
+                <div>
+                    <h1>@Model.Price$</h1>
                 </div>
                 <div>
                     @{
