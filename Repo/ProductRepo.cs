@@ -17,6 +17,14 @@ namespace TechMarket.Repo
             _imageService = imageService;
             _userService = userService;
         }
+        //this method for Admin Index
+        public async Task<int> GetCountAllNewProducts()
+        {
+            return await _appDbContext.Products.Include(p => p.Category)
+               .Where(p => p.IsAvailable == false)
+               .AsNoTracking()
+               .CountAsync();
+        }
         //this method for Home Index
         public async Task<IEnumerable<Product>> GetAllAvailable()
         {
@@ -107,5 +115,7 @@ namespace TechMarket.Repo
             product.IsAvailable = true;
             return _appDbContext.SaveChanges();
         }
+
+        
     }
 }

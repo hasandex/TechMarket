@@ -11,6 +11,7 @@ namespace TechMarket.Controllers
         }
         public async Task<IActionResult> Index()
         {
+            ViewBag.Count = await _productRepo.GetCountAllNewProducts();
             var products = await _productRepo.GetAll();
             return View(products);
         }

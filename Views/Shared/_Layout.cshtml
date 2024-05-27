@@ -39,11 +39,28 @@
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Product" asp-action="Index">Products</a>
                             </li>
                         }
-                       @if(User.Identity.IsAuthenticated && await UserManager.IsInRoleAsync(await UserManager.GetUserAsync(User),ClsRoles.roleAdmin)){
+                       @if(User.Identity.IsAuthenticated && await UserManager.IsInRoleAsync(await UserManager.GetUserAsync(User),ClsRoles.roleAdmin))
+                       {
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="Index">Manage Products</a>
                             </li>
-                        }                      
+                            <li class="nav-item mt-2">
+                                @{
+                                    if (ViewBag.Count > 0 && ViewBag.Count <= 9)
+                                    {
+                                        <i style="color:red;" class="bi bi-@ViewBag.Count-circle-fill"></i>
+                                    }
+                                    else if (ViewBag.Count > 9)
+                                    {
+                                        <i style="color:red;" class="bi bi-9-circle-fill">+</i>
+                                    }
+                                }
+                            </li>
+                        }
+                        
+                        
+
+
                     </ul>
                     <div class="p-2">
                         <form asp-controller="Home" asp-action="Index" class="d-flex" method="get">

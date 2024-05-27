@@ -39,6 +39,7 @@ namespace TechMarket.Controllers
             int recSkip = (pg - 1) * pageSize;
             var data = products.Skip(recSkip).Take(pager.PageSize).ToList();
             this.ViewBag.Pager = pager;
+            ViewBag.Count = await _productRepo.GetCountAllNewProducts();
             return View(data);
         }
 
