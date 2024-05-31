@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TechMarket.Data;
 
@@ -11,9 +12,11 @@ using TechMarket.Data;
 namespace TechMarket.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240530072833_addRating")]
+    partial class addRating
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -275,9 +278,8 @@ namespace TechMarket.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
-                    b.Property<string>("IsAvailable")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<bool>("IsAvailable")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -298,7 +300,7 @@ namespace TechMarket.Migrations
                     b.ToTable("Products");
                 });
 
-            modelBuilder.Entity("TechMarket.Models.Rating", b =>
+            modelBuilder.Entity("TechMarket.Models.ProductRating", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -309,21 +311,42 @@ namespace TechMarket.Migrations
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
 
+                    b.Property<int>("RatingId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("RatingId");
+
+                    b.ToTable("ProductRating");
+                });
+
+            modelBuilder.Entity("TechMarket.Models.Rating", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
                     b.Property<int>("RatingValue")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("ReviewDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("UserId")
+                    b.Property<string>("ReviewerName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("Ratings");
+                    b.ToTable("Rating");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -388,15 +411,23 @@ namespace TechMarket.Migrations
                     b.Navigation("Category");
                 });
 
-            modelBuilder.Entity("TechMarket.Models.Rating", b =>
+            modelBuilder.Entity("TechMarket.Models.ProductRating", b =>
                 {
                     b.HasOne("TechMarket.Models.Product", "Product")
-                        .WithMany("Ratings")
+                        .WithMany("ProductRatings")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("TechMarket.Models.Rating", "Rating")
+                        .WithMany("ProductRatings")
+                        .HasForeignKey("RatingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Product");
+
+                    b.Navigation("Rating");
                 });
 
             modelBuilder.Entity("TechMarket.Models.Category", b =>
@@ -406,7 +437,12 @@ namespace TechMarket.Migrations
 
             modelBuilder.Entity("TechMarket.Models.Product", b =>
                 {
-                    b.Navigation("Ratings");
+                    b.Navigation("ProductRatings");
+                });
+
+            modelBuilder.Entity("TechMarket.Models.Rating", b =>
+                {
+                    b.Navigation("ProductRatings");
                 });
 #pragma warning restore 612, 618
         }

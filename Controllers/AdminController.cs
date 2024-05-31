@@ -26,7 +26,7 @@ namespace TechMarket.Controllers
         }
         public IActionResult RejectProduct(int id)
         {
-            var isDeleted = _productRepo.Delete(id);
+            var isDeleted = _productRepo.RejectProduct(id);
             if (isDeleted == 0)
             {
                 return BadRequest();

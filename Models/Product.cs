@@ -17,6 +17,7 @@ namespace TechMarket.Models
         [ForeignKey("Category")]
         public int CategoryId { get; set; }
         public Category Category { get; set; }
-        public bool IsAvailable { get; set; } = false;
+        public string IsAvailable { get; set; } = "To Be Determined";
+        public ICollection<Rating> Ratings { get; set; }
     }
 }

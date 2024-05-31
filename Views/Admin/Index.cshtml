@@ -36,7 +36,7 @@ else
                 var userInfo = await UserManager.FindByIdAsync(product.UserId);
                 var index = userInfo.UserName.IndexOf('@');
                 var userName = userInfo.UserName.Substring(0, index);
-                <tr class="@(isAvailable ? "" : "bg-warning text-white")">
+                <tr class="@(isAvailable == "To Be Determined" ? "bg-warning text-white" : "")">
                     <td>@count</td>
                     <td>@userName</td>
                     <td>@product.Name</td>
@@ -60,16 +60,22 @@ else
                         </a>
                     </td>
 
-                    @if (isAvailable)
+                    @if (isAvailable == "Accepted")
                     {
                         <td class="text text-info">
                             Is Available
                         </td>
                     }
-                    else
+                    else if (isAvailable == "To Be Determined")
+                    {
+                        <td class="text text-white">
+                            To Be Determined
+                        </td>
+                    }
+                    else if (isAvailable == "Rejected")
                     {
                         <td class="text text-danger">
-                            to be determined
+                            Rejected
                         </td>
                     }
                 </tr>

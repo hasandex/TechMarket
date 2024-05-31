@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TechMarket.Repo.IRepo;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace TechMarket.Controllers
 {
@@ -11,11 +12,15 @@ namespace TechMarket.Controllers
         private readonly IProductRepo _productRepo;
         private readonly ICategoryRepo _categoryRepo;
         private readonly IUserService _userService;
-        public ProductController(IProductRepo productRepo, ICategoryRepo categoryRepo,IUserService userService)
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly IRatingRepo _ratingRepo;
+        public ProductController(IProductRepo productRepo, ICategoryRepo categoryRepo,IUserService userService, UserManager<IdentityUser> userManager, IRatingRepo ratingRepo)
         {
             _productRepo = productRepo;
             _categoryRepo = categoryRepo;
             _userService = userService;
+            _userManager = userManager;
+            _ratingRepo = ratingRepo;
         }
         public async Task<IActionResult> Index()
         {
@@ -101,13 +106,26 @@ namespace TechMarket.Controllers
         }
         [AllowAnonymous]
         public IActionResult Details(int id)
-        {
+        { 
             var product = _productRepo.GetById(id);
             if (product == null)
             {
                 return NotFound();
             }
+            var usertRate = _ratingRepo.GetUserRate(_userService.GetUserId(),id);
+            var productRate = _ratingRepo.GetProductRate(id);
+            ViewBag.userRate = usertRate;
+            ViewBag.productRate = productRate;
             return View(product);
+        }
+        public IActionResult RateProduct(string ratingValue,int productId)
+        {
+           var isRated = _ratingRepo.RateProduct(Int32.Parse(ratingValue),productId,_userService.GetUserId());
+           if(isRated < 0)
+            {
+                return BadRequest();
+            }
+           return Ok();
         }
     }
 }

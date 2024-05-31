@@ -28,6 +28,7 @@ builder.Services.AddScoped<IProductRepo, ProductRepo>();
 builder.Services.AddScoped<ICategoryRepo, CategoryRepo>();
 builder.Services.AddScoped<IImageService, ImageService>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IRatingRepo, RatingRepo>();
 builder.Services.AddSignalR();
 var app = builder.Build();
 

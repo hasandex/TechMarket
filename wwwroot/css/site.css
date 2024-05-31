@@ -38,3 +38,26 @@ body {
     left:0;
     width:100%;
 }*/
+.star-rating {
+    direction: rtl;
+    unicode-bidi: bidi-override;
+    color: #c8c8c8;
+    font-size: 2em;
+    display: inline-block;
+}
+
+    .star-rating input {
+        display: none;
+    }
+
+    .star-rating label {
+        cursor: pointer;
+        padding: 0 0.1em;
+        transition: color 200ms;
+    }
+
+        .star-rating label:hover,
+        .star-rating label:hover ~ label,
+        .star-rating input:checked ~ label {
+            color: #ffd700;
+        }

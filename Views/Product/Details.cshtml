@@ -2,12 +2,13 @@
 @{
     ViewData["Title"] = Model.Name;
 }
-
 <div class="card border-success rounded-4 mt-5 overflow-hidden">
     <div class="card-body p-0">
         <div class="row">
             <div class="col-md-8 px-5 py-4 d-flex flex-column justify-content-between">
                 <div>
+                    <input type="hidden" value="@Model.Id" id="productId" />
+                    <input type="hidden" value="@ViewBag.userRate" id="userRate" />
                     <h1 class="text-dark fw-bolder">@Model.Name</h1>
                     <span class="badge bg-info fs-5 mb-4">@Model.Category.Name</span>
                     <p class="fs-5">@Model.Description</p>
@@ -20,9 +21,13 @@
                         var userInfo = await UserManager.FindByIdAsync(Model.UserId);
                         var index = userInfo.UserName.IndexOf('@');
                         var userName = userInfo.UserName.Substring(0, index);
-                        <h5>@userName</h5>
+                                    <h5>@userName</h5>
                     }
                 </div>
+                @if (ViewBag.productRate != -1)
+                {
+                    <h5 class="mt-2 text text-warning">Product Rate is @ViewBag.productRate</h5>
+                }
             </div>
             <div class="col-md-4" ">
                 <img src="@($"{Settings.ItemImageStorePath}/{Model.Cover}")" alt="@Model.Name" class="w-100" />
@@ -30,3 +35,79 @@
         </div>
     </div>
 </div>
+
+            @if (User.Identity.IsAuthenticated)
+            {
+    <form id="rating-form">
+        <div class="star-rating">
+
+            <input type="radio" id="star5" name="rating" value="5" data-rate="5" />
+            <label id="star5" for="star5" title="5 stars" data-rate="5">&#9733;</label>
+
+            <input type="radio" id="star4" name="rating" value="4" data-rate="4" />
+            <label id="star4" for="star4" title="4 stars" data-rate="4">&#9733;</label>
+
+            <input type="radio" id="star3" name="rating" value="3" data-rate="3" />
+            <label id="star3" for="star3" title="3 stars" data-rate="3">&#9733;</label>
+
+            <input type="radio" id="star2" name="rating" value="2" data-rate="2" />
+            <label id="star2" for="star2" title="2 stars" data-rate="2">&#9733;</label>
+
+            <input type="radio" id="star1" name="rating" value="1" data-rate="1" />
+            <label id="star1" for="star1" title="1 star" data-rate="1">&#9733;</label>
+        </div>
+        <div>
+            <button type="button" class="btn btn-warning" id="submit-rating" disabled>Send Rating</button>
+        </div>
+                    @if (ViewBag.userRate != -1)
+                    {
+            <h5 class="mt-2 text text-dark">You have rated this product with @ViewBag.userRate stars</h5>
+                    }
+
+    </form>
+            }
+ 
+
+
+@section Scripts{
+    <script>
+        // Get all the radio buttons and labels
+        const ratingRadios = $('.star-rating input[type="radio"]');
+        const ratingLabels = $('.star-rating label');
+        const ratingForm = $('#rating-form');
+        const submitButton = $('#submit-rating');
+        const productId = $('#productId').val();
+        // Add event listener to the radio buttons
+        ratingRadios.on('change', function () {
+            submitButton.prop('disabled', false);
+            // Remove the 'selected' class from all labels
+            ratingLabels.removeClass('selected');
+
+            // Add the 'selected' class to the current and all previous labels
+            $(this).prevAll('label').add(this).addClass('selected');
+        });
+
+        // Add click event listener to the submit button
+        submitButton.on('click', function () {
+            submitRatingViaAjax();
+        });
+
+        function submitRatingViaAjax() {
+            const ratingValue = $('.star-rating input[name="rating"]:checked').val();
+            $.ajax({
+                url: `/Product/RateProduct?ratingValue=${ratingValue}&productId=${productId}`,
+                method: 'POST',
+                success: function (response) {
+                    // Handle the successful response
+                    console.log('Rating submitted successfully');
+                    console.log(ratingValue);
+
+                },
+                error: function (xhr, status, error) {
+                    // Handle any errors
+                    console.error('Error submitting rating:', error);
+                }
+            });
+        }
+    </script>
+}

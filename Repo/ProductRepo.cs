@@ -17,11 +17,22 @@ namespace TechMarket.Repo
             _imageService = imageService;
             _userService = userService;
         }
+
+        public int RejectProduct(int id)
+        {
+            var product = GetById(id);
+            if (product == null)
+            {
+                return -1;
+            }
+            product.IsAvailable = "Rejected";
+            return _appDbContext.SaveChanges();
+        }
         //this method for Admin Index
         public async Task<int> GetCountAllNewProducts()
         {
             return await _appDbContext.Products.Include(p => p.Category)
-               .Where(p => p.IsAvailable == false)
+               .Where(p => p.IsAvailable == "To Be Determined")
                .AsNoTracking()
                .CountAsync();
         }
@@ -29,7 +40,7 @@ namespace TechMarket.Repo
         public async Task<IEnumerable<Product>> GetAllAvailable()
         {
             return await _appDbContext.Products.Include(p => p.Category)
-                .Where(p=>p.IsAvailable == true)
+                .Where(p=>p.IsAvailable == "Accepted")
                 .AsNoTracking()
                 .ToListAsync();
         }
@@ -112,10 +123,10 @@ namespace TechMarket.Repo
             {
                 return -1;
             }
-            product.IsAvailable = true;
+            product.IsAvailable = "Accepted";
             return _appDbContext.SaveChanges();
         }
 
-        
+       
     }
 }
