@@ -17,7 +17,7 @@ namespace TechMarket.Repo
             _imageService = imageService;
             _userService = userService;
         }
-
+        //this method for Admin Index
         public int RejectProduct(int id)
         {
             var product = GetById(id);

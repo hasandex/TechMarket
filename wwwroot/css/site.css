@@ -18,8 +18,17 @@ html {
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
+/*    display: flex;
+    flex-direction: column;
+    min-height: 100vh;*/
 }
+/*footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+}*/
 .cover-preview {
     max-width: 100%;
     max-height: 100%;
@@ -61,3 +70,15 @@ body {
         .star-rating input:checked ~ label {
             color: #ffd700;
         }
+
+.navbar {
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+@media (max-width: 991.98px) {
+    .navbar .navbar-toggler {
+        margin-left: auto;
+    }
+}
+

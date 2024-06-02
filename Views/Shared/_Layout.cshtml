@@ -1,15 +1,11 @@
-﻿@using Microsoft.AspNetCore.Identity
-
-@inject SignInManager<IdentityUser> SignInManager
-@inject UserManager<IdentityUser> UserManager
-
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - TechMarket</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+   @*  <link rel="stylesheet" href="~/css/bootstrape.css" /> *@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/TechMarket.styles.css" asp-append-version="true" />
@@ -20,72 +16,61 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">TechMarket</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
+        <nav class="navbar navbar-expand-lg bg-dark navbar-dark">
+            <a asp-controller="Home" asp-action="Index" class="navbar-brand">Tech</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#items" aria-controls="items" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div id="items" class="navbar-collapse collapse">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                    </li>
+                    @if (User.Identity.IsAuthenticated)
+                    {
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link" asp-area="" asp-controller="Product" asp-action="Index">Products</a>
                         </li>
+                    }
+                    @if (User.Identity.IsAuthenticated && await UserManager.IsInRoleAsync(await UserManager.GetUserAsync(User), ClsRoles.roleAdmin))
+                    {
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            <a class="nav-link" asp-area="" asp-controller="Admin" asp-action="Index">Manage</a>
                         </li>
-                        @if (User.Identity.IsAuthenticated)
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Product" asp-action="Index">Products</a>
-                            </li>
-                        }
-                       @if(User.Identity.IsAuthenticated && await UserManager.IsInRoleAsync(await UserManager.GetUserAsync(User),ClsRoles.roleAdmin))
-                       {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="Index">Manage Products</a>
-                            </li>
-                            <li class="nav-item mt-2">
-                                @{
-                                    if (ViewBag.Count > 0 && ViewBag.Count <= 9)
-                                    {
-                                        <i style="color:red;" class="bi bi-@ViewBag.Count-circle-fill"></i>
-                                    }
-                                    else if (ViewBag.Count > 9)
-                                    {
-                                        <i style="color:red;" class="bi bi-9-circle-fill">+</i>
-                                    }
-                                }
-                            </li>
-                        }
-                        
-                        
-
-
-                    </ul>
-                    <div class="p-2">
-                        <form asp-controller="Home" asp-action="Index" class="d-flex" method="get">
-                            <input name="seachName" class="form-control me-2" type="search" placeholder="Search" aria-label="Search"
-                                   value="@ViewBag.seachName">
-                            <button class="btn btn-outline-success" type="submit">Search</button>
-                        </form>
-                    </div>
-                   
-                    <partial name="_LoginPartial" />
-                </div>
+                    }
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Contact</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Dropdown
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="#">Action</a></li>
+                            <li><a class="dropdown-item" href="#">Another action</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#">Something else here</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                <form class="d-flex" asp-controller="Home" asp-action="Index" method="get">
+                    <input name="seachName" value="@ViewBag.seachName" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success my-2 my-lg-0" type="submit">Search</button>
+                </form>
+                <partial name="_LoginPartial" />
             </div>
+     
         </nav>
     </header>
     <div class="container">
-        <main role="main" class="pb-3">
+        <main role="main" class="pb-3 ">
             @RenderBody()
         </main>
     </div>
-
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2024 - TechMarket - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+
+                &copy; 2024 - TechMarket -
         </div>
     </footer>
 

@@ -42,6 +42,7 @@ else
                 <th scope="col">Price</th>
                 <th scope="col">Cover</th>
                 <th scope="col">Actions</th>
+                <th scope="col">Status</th>
             </tr>
         </thead>
         <tbody>
@@ -62,6 +63,26 @@ else
                             <i class="bi bi-trash"></i>
                         </a>
                     </td>
+                    
+                        @if(product.IsAvailable == "Accepted")
+                        {
+                            <td class="text text-success">
+                           @product.IsAvailable
+                        </td>
+                    }
+                    else if (product.IsAvailable == "Rejected")
+                    {
+                        <td class="text text-danger">
+                            @product.IsAvailable
+                        </td>
+                    }
+                    else
+                    {
+                        <td>
+                            @product.IsAvailable
+                        </td>
+                    }
+
                     @* <td>
                         <form method="post" asp-controller="Cart" asp-action="Add"> 
                             <input type="hidden" name="itemId" value="@product.Id" />
