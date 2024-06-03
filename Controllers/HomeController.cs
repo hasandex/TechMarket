@@ -9,12 +9,14 @@ namespace TechMarket.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly IProductRepo _productRepo;
         public readonly ICategoryRepo _categoryRepo;
+        private readonly IRatingRepo _ratingRepo;
 
-        public HomeController(ILogger<HomeController> logger, IProductRepo productRepo, ICategoryRepo categoryRepo)
+        public HomeController(ILogger<HomeController> logger, IProductRepo productRepo, ICategoryRepo categoryRepo, IRatingRepo ratingRepo)
         {
             _logger = logger;
             _productRepo = productRepo;
             _categoryRepo = categoryRepo;
+            _ratingRepo = ratingRepo;
         }
 
         public async Task<IActionResult> Index(string? seachName, string? categoryName, int pg = 1)
@@ -38,12 +40,21 @@ namespace TechMarket.Controllers
             var pager = new Pager(rescCount, pg, pageSize);
             int recSkip = (pg - 1) * pageSize;
             var data = products.Skip(recSkip).Take(pager.PageSize).ToList();
+            var indexProducts = data.Select(d=> new ProductIndexViewModel
+            {
+                product = d,
+                ProductRate = _ratingRepo.GetProductRate(d.Id)
+            } );
             this.ViewBag.Pager = pager;
             //get the number of products which still in "To Be Determided" Status to dipslay in the nav
             ViewBag.Count = await _productRepo.GetCountAllNewProducts();
-            return View(data);
+            return View(indexProducts);
         }
-
+        public IActionResult HomePage()
+        {
+            ViewBag.categories = _categoryRepo.GetCategories();
+            return View();
+        }
         public IActionResult Privacy()
         {
             return View();

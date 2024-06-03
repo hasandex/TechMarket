@@ -19,7 +19,8 @@ html {
 
 body {
     margin-bottom: 60px;
-/*    display: flex;
+
+    /*    display: flex;
     flex-direction: column;
     min-height: 100vh;*/
 }
@@ -41,12 +42,7 @@ body {
     align-items: center;
     height: 100%;
 }
-/*footer{
-    position:fixed;
-    bottom:0;
-    left:0;
-    width:100%;
-}*/
+
 .star-rating {
     direction: rtl;
     unicode-bidi: bidi-override;
@@ -82,3 +78,144 @@ body {
     }
 }
 
+.navbar-brand {
+    color: #FFD700; /* Light blue color */
+}
+    .navbar-brand:hover {
+        color: #FFD700; /* Gold color on hover */
+    }
+.navbar-nav .nav-link,
+.navbar-nav .dropdown-item {
+    color: #add8e6; /* Light blue color */
+}
+
+    /* Change the text color on hover */
+    .navbar-nav .nav-link:hover,
+    .navbar-nav .dropdown-item:hover {
+        color: #FFD700; /* Gold color on hover */
+    }
+
+
+header.masthead .masthead-heading {
+    font-size: 3.25rem;
+    font-weight: 700;
+    line-height: 3.25rem;
+    margin-bottom: 2rem;
+    font-family: "Montserrat", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+@media (min-width: 768px) {
+    header.masthead {
+        padding-top: 17rem;
+        padding-bottom: 12.5rem;
+    }
+
+        header.masthead .masthead-subheading {
+            font-size: 2.25rem;
+            font-style: italic;
+            line-height: 2.25rem;
+            margin-bottom: 2rem;
+        }
+
+        header.masthead .masthead-heading {
+            font-size: 4.5rem;
+            font-weight: 700;
+            line-height: 4.5rem;
+            margin-bottom: 4rem;
+        }
+}
+
+/* Set the background color of the dropdown menu */
+.dropdown-menu {
+    background-color: #333; /* Dark color */
+}
+
+/* Set the text color of the dropdown items */
+.dropdown-item {
+    color: #add8e6; /* Light blue color */
+}
+
+    /* Change the text color of the dropdown items on hover */
+    .dropdown-item:hover {
+        color: #FFD700; /* Gold color on hover */
+        background-color: #444; /* Slightly darker background on hover */
+    }
+/* Change the color of the navbar toggler button */
+.navbar-toggler {
+    border-color: #FFD700; /* Gold border color */
+    background-color: #FFD700; /* Gold background color */
+    color: #333; /* Dark text color */
+    margin-right: 2rem;
+}
+
+/* Change the color of the navbar toggler icon */
+.navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3e%3cpath stroke='%23333' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+.bg-image {
+    height: 100%;
+    width: 100%;
+    
+    top: 0;
+    left: 0;
+    z-index: -1;
+}
+a {
+    text-decoration: none;
+}
+
+.social-link {
+    width: 30px;
+    height: 30px;
+    border: 1px solid #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #666;
+    border-radius: 50%;
+    transition: all 0.3s;
+    font-size: 0.9rem;
+}
+
+    .social-link:hover,
+    .social-link:focus {
+        background: #ddd;
+        text-decoration: none;
+        color: #555;
+    }
+
+.progress {
+    height: 10px;
+}
+/*.card {
+    border: 3px solid #ffd700;*/ /* Gold border */
+    /*border-radius: 0.5rem;*/ /* Adjust the border radius as needed */
+    /*box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);*/ /* Add a subtle box shadow */
+/*}*/
+.card_index {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.card_index_body {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+@media (max-width: 767.98px) {
+    .col-md-6 {
+        -ms-flex: 0 0 50%;
+        flex: 0 0 50%;
+        max-width: 50%;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .col-6 {
+        -ms-flex: 0 0 50%;
+        flex: 0 0 50%;
+        max-width: 50%;
+    }
+}

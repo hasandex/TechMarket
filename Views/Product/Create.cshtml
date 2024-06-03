@@ -1,5 +1,5 @@
 ﻿@model CreateProductViewModel
-
+<div class="container">
 @{
     ViewData["Title"] = "Create Product";
 }
@@ -37,8 +37,9 @@
     <button type="submit" class="btn btn-outline-primary" id="sendButton">Create</button>
     </fieldset>
 </form>
-<partial name="_ConfirmationModal" />
 
+<partial name="_ConfirmationModal" />
+</div>
 @section Scripts {
     <script src="~/js/image_preview.js"></script>
     <script>

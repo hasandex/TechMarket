@@ -1,5 +1,5 @@
-﻿@model IEnumerable<Product>
-
+﻿@model IEnumerable<ProductIndexViewModel>
+<div class="container">
 @{
     ViewData["Title"] = "Home Page";
 }
@@ -15,17 +15,72 @@
 }
 
                 @if (!Model.Any())
-                {
-                    <div class="alert alert-warning">
-                        <h4 class="alert-heading">No Products!</h4>
-                        <p class="mb-0">No Products were added yet</p>
-                    </div>
-                }
+    {
+        <div class="alert alert-warning">
+            <h4 class="alert-heading">No Products!</h4>
+            <p class="mb-0">No Products were added yet</p>
+        </div>
+    }
 
-                else
-                {
-    
-    <div class="row mt-5 mb-3">
+    else
+    {
+       
+            <header class="text-center mb-5">
+                <h1 class="display-4 font-weight-bold">TechMarket Products</h1>
+            <p class="font-italic text-muted mb-0">Stay connected like never before with our feature-packed smartphones, packed with advanced camera systems, lightning-fast 5G connectivity, and intuitive AI assistants to streamline your daily tasks. Unleash your creativity with our versatile tablets and 2-in-1 devices, empowering you to work, play, and create on the go.</p>
+                <p class="font-italic text-muted">
+                    Snippet By <a asp-action="HomePage" class="text-muted">
+                        <u>TechMarket</u>
+                    </a>
+                </p>
+            </header>
+
+            <div class="row pb-5 mb-4">
+            @foreach (var viewmodel in Model)
+            {
+                <div class="col-lg-3 col-md-6 mb-4 mb-lgs-0">
+                    <!-- Card-->
+                    <div class="card card_index rounded shadow-sm border-0">
+                        <div class="card-body card_index_body p-4" style="">
+                            <a asp-controller="Product" asp-action="Details" asp-route-id="@viewmodel.product.Id">
+                                <img src="@($"{Settings.ItemImageStorePath}/{viewmodel.product.Cover}")" alt="" class="img-fluid d-block mx-auto mb-3">
+                            </a>
+                            <h5><a href="@Url.Action("ProductDetails", "ProductController", new { id = viewmodel.product.Id })">@viewmodel.product.Name</a></h5>
+                            <p class="small text-muted font-italic">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                            @{
+                                if (viewmodel.ProductRate == -1)
+                                {
+                                    <p>Not Rated yet</p>
+                                }
+                                else
+                                {
+                                    <ul class="list-inline small">
+                                        @{
+                                            int wholeStar = (int)viewmodel.ProductRate;
+                                            bool hasHalfStar = viewmodel.ProductRate % 1 > 0;
+                                        }
+
+                                        @for (int i = 0; i < wholeStar; i++)
+                                        {
+                                            <li class="list-inline-item m-0"><i class="fa fa-star text-success"></i></li>
+                                        }
+
+                                        @if (hasHalfStar)
+                                        {
+                                            <li class="list-inline-item m-0"><i class="fa fa-star-half text-success"></i></li>
+                                        }
+                                    </ul>
+                                }
+                            }
+                        </div>
+                        </div>
+                    </div>
+              
+            }
+            </div>
+        
+    }
+        @*   <div class="row mt-5 mb-3">
 
         @foreach (var product in Model)
         {
@@ -47,9 +102,9 @@
 
 
         }
-    </div>
+    </div> *@
 
-}
+
 
 @* <div>
     @foreach (var category in ViewBag.categories)
@@ -113,3 +168,4 @@
      </div>
     
  </div>
+</div>

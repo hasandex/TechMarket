@@ -1,8 +1,80 @@
 ﻿@model Product
+<div class="container">
 @{
     ViewData["Title"] = Model.Name;
 }
-<div class="card border-success rounded-4 mt-5 overflow-hidden">
+    <input type="hidden" value="@Model.Id" id="productId" />
+    <input type="hidden" value="@ViewBag.userRate" id="userRate" />
+    <div class="container my-5">
+        <div class="row">
+            <div class="col-lg-6 col-md-12">
+                <img src="@($"{Settings.ItemImageStorePath}/{Model.Cover}")" style="width:100%;height:auto;" class="img-fluid rounded" alt="Product Image">
+            </div>
+            <div class="col-lg-6 col-md-12  text-md-start">
+                <h5 class="my-3">@Model.Name</h5>
+                <p class="my-3">@Model.Description</p>
+                <p class="my-3"><strong>Price:</strong>  @Model.Price$</p>
+                <p class="my-3"><strong>Category:</strong>  @Model.Category.Name</p>
+                <div class="d-flex align-items-center my-3">
+                    <p class="mb-0 me-2"><strong>Rate:</strong> </p>
+                    @if (ViewBag.productRate == -1)
+                    {
+                        <p class="small text-muted mb-0">Not Rated yet</p>
+                    }
+                    else
+                    {
+                        <ul class="list-inline small mb-0">
+                            @{
+                                int wholeStar = (int)ViewBag.productRate;
+                                bool hasHalfStar = ViewBag.productRate % 1 > 0;
+                            }
+
+                            @for (int i = 0; i < wholeStar; i++)
+                            {
+                                <li class="list-inline-item m-0"><i class="fa fa-star text-success"></i></li>
+                            }
+
+                            @if (hasHalfStar)
+                            {
+                                <li class="list-inline-item m-0"><i class="fa fa-star-half text-success"></i></li>
+                            }
+                        </ul>
+                    }
+                </div>
+                @{
+                    var userInfo = await UserManager.FindByIdAsync(Model.UserId);
+                    var index = userInfo.UserName.IndexOf('@');
+                    var userName = userInfo.UserName.Substring(0, index);
+                }
+                <p class="my-3"><strong>User:</strong> @userName</p>
+                <a href="#" class="btn btn-primary btn-sm my-3">Add to Cart</a>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <form id="rating-form" class="my-3">
+                        <div class="star-rating mb-2">
+                            <input type="radio" id="star5" name="rating" value="5" data-rate="5" />
+                            <label id="star5" for="star5" title="5 stars" data-rate="5">&#9733;</label>
+                            <input type="radio" id="star4" name="rating" value="4" data-rate="4" />
+                            <label id="star4" for="star4" title="4 stars" data-rate="4">&#9733;</label>
+                            <input type="radio" id="star3" name="rating" value="3" data-rate="3" />
+                            <label id="star3" for="star3" title="3 stars" data-rate="3">&#9733;</label>
+                            <input type="radio" id="star2" name="rating" value="2" data-rate="2" />
+                            <label id="star2" for="star2" title="2 stars" data-rate="2">&#9733;</label>
+                            <input type="radio" id="star1" name="rating" value="1" data-rate="1" />
+                            <label id="star1" for="star1" title="1 star" data-rate="1">&#9733;</label>
+                        </div>
+                        <div>
+                            <button type="button" class="btn btn-warning" id="submit-rating" disabled>Send Rating</button>
+                        </div>
+                        @if (ViewBag.userRate != -1)
+                        {
+                            <h5 class="mt-3 text text-warning">You have rated this product with @ViewBag.userRate stars</h5>
+                        }
+                    </form>
+                }
+            </div>
+        </div>
+@* <div class="card border-success rounded-4 mt-5 overflow-hidden">
     <div class="card-body p-0">
         <div class="row">
             <div class="col-md-8 px-5 py-4 d-flex flex-column justify-content-between">
@@ -34,40 +106,11 @@
             </div>
         </div>
     </div>
-</div>
+</div> *@
 
-            @if (User.Identity.IsAuthenticated)
-            {
-    <form id="rating-form">
-        <div class="star-rating">
-
-            <input type="radio" id="star5" name="rating" value="5" data-rate="5" />
-            <label id="star5" for="star5" title="5 stars" data-rate="5">&#9733;</label>
-
-            <input type="radio" id="star4" name="rating" value="4" data-rate="4" />
-            <label id="star4" for="star4" title="4 stars" data-rate="4">&#9733;</label>
-
-            <input type="radio" id="star3" name="rating" value="3" data-rate="3" />
-            <label id="star3" for="star3" title="3 stars" data-rate="3">&#9733;</label>
-
-            <input type="radio" id="star2" name="rating" value="2" data-rate="2" />
-            <label id="star2" for="star2" title="2 stars" data-rate="2">&#9733;</label>
-
-            <input type="radio" id="star1" name="rating" value="1" data-rate="1" />
-            <label id="star1" for="star1" title="1 star" data-rate="1">&#9733;</label>
-        </div>
-        <div>
-            <button type="button" class="btn btn-warning" id="submit-rating" disabled>Send Rating</button>
-        </div>
-                    @if (ViewBag.userRate != -1)
-                    {
-            <h5 class="mt-2 text text-dark">You have rated this product with @ViewBag.userRate stars</h5>
-                    }
-
-    </form>
-            }
  
-
+ 
+</div>
 
 @section Scripts{
     <script>

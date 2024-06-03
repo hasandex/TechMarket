@@ -1,10 +1,11 @@
 ﻿@model UpdateProductViewModel
+<div class="container">
 @{
     ViewData["Title"] = "Update Product";
 }
 
 <form asp-action="Update" enctype="multipart/form-data">
-    <legend>Legend</legend>
+        <legend class="text-center">Update Product</legend>
     <div>
         <label asp-for="Name" class="form-label mt-4"></label>
         <input asp-for="Name" type="text" class="form-control">
@@ -36,7 +37,7 @@
     <button type="submit" class="btn btn-primary">Update</button>
     </fieldset>
 </form>
-
+</div>
 @section Scripts {
     <script src="~/js/image_preview.js"></script>
 }

@@ -2,7 +2,7 @@
 @{
     ViewData["Title"] = "Admin";
 }
-
+<div class="mt-2">
 @if (!Model.Any())
 {
     <div class="alert alert-warning">
@@ -36,7 +36,8 @@ else
                 var userInfo = await UserManager.FindByIdAsync(product.UserId);
                 var index = userInfo.UserName.IndexOf('@');
                 var userName = userInfo.UserName.Substring(0, index);
-                <tr class="@(isAvailable == "To Be Determined" ? "bg-warning text-white" : "")">
+                @* <tr class="@(isAvailable == "To Be Determined" ? "bg-dark text-white" : "")"> *@
+                    <tr class="bg-dark text-white">
                     <td>@count</td>
                     <td>@userName</td>
                     <td>@product.Name</td>
@@ -84,3 +85,4 @@ else
       
   </table>
 }
+</div>
