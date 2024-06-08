@@ -1,0 +1,37 @@
+﻿@model IEnumerable<Product>
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "Display all products";
+}
+
+@if (!Model.Any())
+{
+    <div class="alert alert-warning">
+        <h3>No Products in our system</h3>
+    </div>
+}
+else
+{
+    <table>
+        <thead>
+            <th>User</th>
+            <th>Product</th>
+            <th>Details</th>
+            
+        </thead>
+        <tbody>
+            @foreach (var product in Model)
+            {
+                var userInfo = await UserManager.FindByIdAsync(product.UserId);
+                var index = userInfo.UserName.IndexOf('@');
+                var userName = userInfo.UserName.Substring(0, index);
+                <tr>
+                    <td>@userName</td>
+                    <td>@product.Name</td>
+                    <td>Details</td>
+                  
+                </tr>
+            }
+        </tbody>
+    </table>
+}

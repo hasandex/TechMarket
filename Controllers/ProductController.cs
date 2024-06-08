@@ -12,9 +12,13 @@ namespace TechMarket.Controllers
         private readonly IProductRepo _productRepo;
         private readonly ICategoryRepo _categoryRepo;
         private readonly IUserService _userService;
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly IRatingRepo _ratingRepo;
-        public ProductController(IProductRepo productRepo, ICategoryRepo categoryRepo,IUserService userService, UserManager<IdentityUser> userManager, IRatingRepo ratingRepo)
+        public ProductController(IProductRepo productRepo,
+            ICategoryRepo categoryRepo,
+            IUserService userService,
+            UserManager<ApplicationUser> userManager,
+            IRatingRepo ratingRepo)
         {
             _productRepo = productRepo;
             _categoryRepo = categoryRepo;

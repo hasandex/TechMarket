@@ -5,9 +5,13 @@ namespace TechMarket.Controllers
     public class AdminController : Controller
     {
         private readonly IProductRepo _productRepo;
-        public AdminController(IProductRepo productRepo)
+        private readonly IUserRepo _userRepo;
+        private readonly IUserService _userService;
+        public AdminController(IProductRepo productRepo, IUserRepo userRepo, IUserService userService)
         {
             _productRepo = productRepo;
+            _userRepo = userRepo;
+            _userService = userService;
         }
         public async Task<IActionResult> Index()
         {
@@ -33,5 +37,25 @@ namespace TechMarket.Controllers
             }
             return RedirectToAction("Index");
         }
+        public IActionResult Dashboard()
+        {
+            return View();
+        }
+        public async Task<IActionResult> DisplayProducts()
+        {
+            //ViewBag.Count = await _productRepo.GetCountAllNewProducts();
+            var products = await _productRepo.GetAll();
+            return View(products);
+        }
+        public async Task<IActionResult> DisplayUsers()
+        {
+            var users = await _userRepo.GetUsers();
+            return View(users);
+        }
+        public async Task<IActionResult> MyProducts()
+        {
+            return View(await _productRepo.GetAll(_userService.GetUserId()));
+        }
+
     }
 }

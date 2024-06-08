@@ -1,6 +1,15 @@
 ﻿<ul class="navbar-nav ms-auto">
     @if (SignInManager.IsSignedIn(User))
     {
+
+        var user = await UserManager.GetUserAsync(User);
+        @if (await UserManager.IsInRoleAsync(user, ClsRoles.roleAdmin))
+        {
+            <li class="nav-item">
+                <a id="manage" class="nav-link text-light" asp-controller="Admin" asp-action="DisplayProducts" title="Dashboard">Dashboard</a>
+            </li>
+        }
+
         string email = @UserManager.GetUserName(User)!;
         int index = email.IndexOf('@');
         string userName = email.Substring(0, index);
@@ -12,6 +21,8 @@
                 <button id="logout" type="submit" class="nav-link btn btn-link text-light border-0">Logout</button>
             </form>
         </li>
+       
+
     }
     else
     {

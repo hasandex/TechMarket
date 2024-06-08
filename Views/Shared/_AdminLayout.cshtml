@@ -1,0 +1,121 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>NewLayout</title>
+    <link rel="stylesheet" href="~/bootstrap.css" />
+    <link rel="stylesheet" href="~/css/design.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
+</head>
+<body>
+    <div class="menu">
+        <ul>
+            <li class="profile">
+                <div class="img-box">
+                    <img src="/assets/images/support.jpg" alt="profile">
+                </div>
+                <h2>hasan</h2>
+            </li>
+
+
+            <li>
+                <a asp-area="Identity" asp-page="/Account/Manage/Index">
+                    <i class="fas fa-home"></i>
+                    <span>Profile</span>
+                </a>
+            </li>
+            <li>
+                <a asp-controller="Admin" asp-action="DisplayUsers">
+                    <i class="fas fa-user-group"></i>
+                    <span>clients</span>
+                </a>
+            </li>
+            <li>
+                <a asp-controller="Admin" asp-action="MyProducts">
+                    <i class="fas fa-chart-pie"></i>
+                    <span>Products</span>
+                </a>
+            </li>
+            <li>
+                <a asp-controller="Admin" asp-action="DisplayProducts">
+                    <i class="fas fa-pen"></i>
+                    <span>posts</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="fas fa-cog"></i>
+                    <span>settings</span>
+                </a>
+            </li>
+            <li class="logout">
+                <a asp-controller="Home" asp-action="HomePage">
+                    <i class="fas fa-sign-out"></i>
+                    <span>Exit</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="content">
+        <div class="title-info">
+            <span>dashboard</span>
+            <i class="fas fa-chart-bar"></i>
+        </div>
+
+        <div class="data-info">
+            <div class="box">
+                <i class="fas fa-user"></i>
+                <div class="data">
+                    <p>User</p>
+                    <span>10</span>
+                </div>
+            </div>
+
+            <div class="box">
+                <i class="fas fa-pen"></i>
+                <div class="data">
+                    <p>Posts</p>
+                    <span>10</span>
+                </div>
+            </div>
+
+            <div class="box">
+                <i class="fas fa-table"></i>
+                <div class="data">
+                    <p>Products</p>
+                    <span>10</span>
+                </div>
+            </div>
+
+
+            <div class="box">
+                <i class="fas fa-dollar"></i>
+                <div class="data">
+                    <p>Revenue</p>
+                    <span>10</span>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="title-info">
+            <span>Products</span>
+            <i class="fas fa-table"></i>
+        </div>
+        <div>
+            @RenderBody()
+        </div>
+       
+
+
+    </div>
+
+    <script src="~/bootstrap.js"></script>
+</body>
+</html>

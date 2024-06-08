@@ -1,171 +1,150 @@
 ﻿@model IEnumerable<ProductIndexViewModel>
-<div class="container">
-@{
-    ViewData["Title"] = "Home Page";
-}
-
-@{
-    Pager pager = new Pager();
-    int pageNo = 0;
-    if (ViewBag.Pager != null)
-    {
-        pager = ViewBag.Pager;
-        pageNo = pager.CurrentPage;
-    }
-}
-
-                @if (!Model.Any())
-    {
-        <div class="alert alert-warning">
-            <h4 class="alert-heading">No Products!</h4>
-            <p class="mb-0">No Products were added yet</p>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-3">
+            <div class="text-center">
+                <img src="/assets/poster-231_512.gif" alt="Alternate Text" width="150px" />
+            </div>
+            <br />
+            <!-- Left side menu -->
+            <nav class="navbar navbar-expand-lg navbar-light bg-light mt-4">
+                <div class="container-fluid">
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav flex-column" @* style="background-color:aquamarine" *@>
+                            <li class="nav-item">
+                                <a style="color:darkblue" class="nav-link" asp-controller="Home" asp-action="Index" asp-route-categoryName="Computer"><strong>Computer</strong></a>
+                            </li>
+                            <li class="nav-item">
+                                <a style="color:darkblue" class="nav-link" asp-controller="Home" asp-action="Index" asp-route-categoryName="Laptop"><strong>Laptop</strong></a>
+                            </li>
+                            <li class="nav-item">
+                                <a style="color:darkblue" class="nav-link" asp-controller="Home" asp-action="Index" asp-route-categoryName="Mobile"><strong>Mobile</strong></a>
+                            </li>
+                            <li class="nav-item">
+                                <a style="color:darkmagenta" class="nav-link" href="#"><strong>Services</strong></a>
+                            </li>
+                            <li class="nav-item">
+                                <a style="color:darkmagenta" class="nav-link" href="#"><strong>Contact</strong></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
         </div>
-    }
+        <div class="col-9">
+            @{
+                ViewData["Title"] = "Home Page";
+            }
 
-    else
-    {
-       
-            <header class="text-center mb-5">
-                <h1 class="display-4 font-weight-bold">TechMarket Products</h1>
-            <p class="font-italic text-muted mb-0">Stay connected like never before with our feature-packed smartphones, packed with advanced camera systems, lightning-fast 5G connectivity, and intuitive AI assistants to streamline your daily tasks. Unleash your creativity with our versatile tablets and 2-in-1 devices, empowering you to work, play, and create on the go.</p>
-                <p class="font-italic text-muted">
-                    Snippet By <a asp-action="HomePage" class="text-muted">
-                        <u>TechMarket</u>
-                    </a>
-                </p>
-            </header>
+            @{
+                Pager pager = new Pager();
+                int pageNo = 0;
+                if (ViewBag.Pager != null)
+                {
+                    pager = ViewBag.Pager;
+                    pageNo = pager.CurrentPage;
+                }
+            }
 
-            <div class="row pb-5 mb-4">
-            @foreach (var viewmodel in Model)
+            @if (!Model.Any())
             {
-                <div class="col-lg-3 col-md-6 mb-4 mb-lgs-0">
-                    <!-- Card-->
-                    <div class="card card_index rounded shadow-sm border-0">
-                        <div class="card-body card_index_body p-4" style="">
-                            <a asp-controller="Product" asp-action="Details" asp-route-id="@viewmodel.product.Id">
-                                <img src="@($"{Settings.ItemImageStorePath}/{viewmodel.product.Cover}")" alt="" class="img-fluid d-block mx-auto mb-3">
-                            </a>
-                            <h5><a href="@Url.Action("ProductDetails", "ProductController", new { id = viewmodel.product.Id })">@viewmodel.product.Name</a></h5>
-                            <p class="small text-muted font-italic">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-                            @{
-                                if (viewmodel.ProductRate == -1)
-                                {
-                                    <p>Not Rated yet</p>
-                                }
-                                else
-                                {
-                                    <ul class="list-inline small">
-                                        @{
-                                            int wholeStar = (int)viewmodel.ProductRate;
+                <div class="alert alert-warning">
+                    <h4 class="alert-heading">No Products!</h4>
+                    <p class="mb-0">No Products were added yet</p>
+                </div>
+            }
+            else
+            {
+                @if (TempData["addedSuccessfully"] != null)
+                {
+                    <span class="alert alert-info">@TempData["addToCart"]</span>
+                }
+                <header class="text-center mb-5">
+                    <h1 class="display-4 font-weight-bold">TechMarket Products</h1>
+                    <p class="font-italic text-muted mb-0">Stay connected like never before with our feature-packed smartphones, packed with advanced camera systems, lightning-fast 5G connectivity, and intuitive AI assistants to streamline your daily tasks. Unleash your creativity with our versatile tablets and 2-in-1 devices, empowering you to work, play, and create on the go.</p>
+                    <p class="font-italic text-muted">
+                        Snippet By <a asp-action="HomePage" class="text-muted">
+                            <u>TechMarket</u>
+                        </a>
+                    </p>
+                </header>
+                
+         <div class="row pb-5 mb-4">
+              @foreach (var viewmodel in Model)
+               {
+               <input id="productId" value="@viewmodel.product.Id" hidden />
+               <div class="col-lg-3 col-md-6 mb-4 mb-lgs-0">
+                   <!-- Card-->
+                  <div class="card card_index rounded shadow-sm border-0">
+                    <div class="card-body card_index_body p-4" style="">
+                    <a asp-controller="Product" asp-action="Details" asp-route-id="@viewmodel.product.Id">
+                         <img src="@($"{Settings.ItemImageStorePath}/{viewmodel.product.Cover}")" alt="" class="img-fluid d-block mx-auto mb-3">
+                    </a>
+                    <h5><a href="@Url.Action("ProductDetails", "ProductController", new { id = viewmodel.product.Id })">@viewmodel.product.Name</a></h5>
+                   <p class="small text-muted font-italic">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                      @{
+                         if (viewmodel.ProductRate == -1)
+                             {
+                            <p>Not Rated yet</p>
+                             }
+                         else
+                             {
+                               <ul class="list-inline small">
+                                      @{
+                                          int wholeStar = (int)viewmodel.ProductRate;
                                             bool hasHalfStar = viewmodel.ProductRate % 1 > 0;
-                                        }
+                                       }
 
-                                        @for (int i = 0; i < wholeStar; i++)
-                                        {
-                                            <li class="list-inline-item m-0"><i class="fa fa-star text-success"></i></li>
-                                        }
+                                     @for (int i = 0; i < wholeStar; i++)
+                                       {
+                                          <li class="list-inline-item m-0"><i class="fa fa-star text-success"></i></li>
+                                       }
 
-                                        @if (hasHalfStar)
-                                        {
-                                            <li class="list-inline-item m-0"><i class="fa fa-star-half text-success"></i></li>
+                                     @if (hasHalfStar)
+                                       {
+                                        <li class="list-inline-item m-0"><i class="fa fa-star-half text-success"></i></li>
                                         }
-                                    </ul>
-                                }
-                            }
-                        </div>
-                        </div>
+                                 </ul>
+                               }
+                             }
+                         <div>
+                          @* <a asp-controller="Cart" asp-action="AddToCart" asp-route-productId ="@viewmodel.product.Id" class="btn btn-primary" id="btnCart"><i class="bi bi-cart-plus"></i></a> *@
+                                        <div>
+                                            <button class="btn btn-primary btn-add-to-cart" data-product-id="@viewmodel.product.Id">
+                                                <i class="bi bi-cart-plus"></i>
+                                            </button>
+                                        </div>
+
+                                    </div>
+                                      
                     </div>
-              
-            }
-            </div>
-        
-    }
-        @*   <div class="row mt-5 mb-3">
-
-        @foreach (var product in Model)
-        {
-            <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-2">
-                <div class="card mb-3 h-100" style="margin-inline:auto;max-width: 20rem;">
-                    <a asp-controller="Product" asp-action="Details" asp-route-id="@product.Id">
-                        <img class="card-img-top" src="@($"{Settings.ItemImageStorePath}/{product.Cover}")" />
-                    </a>
-                    <div class="card-body">
-                        <h5 class="card-title">@product.Name</h5>
-                        <p class="card-text" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;max-width: 300px;">@product.Description</p>
-                        <div style="display: flex; justify-content: space-between;  align-items: center;">
-                        <button class="btn btn-primary" style="margin-right: 1rem;">Add To Cart</button>
-                        <h4 style="padding-top:15px">@product.Price$</h4>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
+                 </div>
+           </div>
         }
-    </div> *@
+      </div>
+     }
 
-
-
-@* <div>
-    @foreach (var category in ViewBag.categories)
-    {
-        <a asp-action="Index" asp-route-categoryName="@category.Name">@category.Name</a>
-        <br />
-    }
-</div>
- *@
-
-
-<nav aria-label="Page navigation example">
-    @if (pager.TotalPages > 0)
-    {
-        <ul class="pagination">
-            @for (var pge = pager.StartPage; pge <= pager.EndPage; pge++)
-            {
-                <li class="page-item @(pge==pager.CurrentPage ? "active": "")">
-                    <a class="page-link" asp-controller="Home" asp-action="Index" asp-route-pg="@pge">@pge</a>
-                </li>
-            }
-        </ul>
-    }
-</nav>
-<br />
-<br />
-<br />
-
- <div class="row container">
-     <div class="col-8">
-        <div id="carouselExampleIndicators" class="carousel slide w-75" data-bs-ride="carousel" data-interval="1000">
-            <div class="carousel-indicators">
-                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
-                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
-            </div>
-            <div class="carousel-inner">
-                <div class="carousel-item active">
-                    <img src="/assets/images/dell.jpg" class="d-block w-100" alt="Slide 1">
-                </div>
-                <div class="carousel-item">
-                    <img src="~/assets/images/iphone.jpg" class="d-block w-100" alt="Slide 2">
-                </div>
-                <div class="carousel-item">
-                    <img src="/assets/images/support.jpg" class="d-block w-100" alt="Slide 3">
-                </div>
-            </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon"></span>
-                <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-                <span class="carousel-control-next-icon"></span>
-                <span class="visually-hidden">Next</span>
-            </button>
+            <nav aria-label="Page navigation example">
+                @if (pager.TotalPages > 0)
+                {
+                    <ul class="pagination">
+                        @for (var pge = pager.StartPage; pge <= pager.EndPage; pge++)
+                        {
+                            <li class="page-item @(pge==pager.CurrentPage ? "active": "")">
+                                <a class="page-link" asp-controller="Home" asp-action="Index" asp-route-pg="@pge">@pge</a>
+                            </li>
+                        }
+                    </ul>
+                }
+            </nav>
         </div>
-     </div>
-
-     <div class="col-4">
-        <img src="/assets//images/iphone.jpg" class="d-block w-100" />
-     </div>
-    
- </div>
+    </div>
 </div>
+
+
+                    @section Scripts{
+    <script src="~/js/addtocart.js"></script>
+                    } 

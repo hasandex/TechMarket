@@ -3,7 +3,7 @@ using TechMarket.Models;
 
 namespace TechMarket.Data
 {
-    public class AppDbContext : IdentityDbContext<IdentityUser>
+    public class AppDbContext : IdentityDbContext<ApplicationUser>
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
@@ -12,6 +12,8 @@ namespace TechMarket.Data
         public DbSet<Category> Categories { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<Rating> Ratings { get; set; }
+        public DbSet<Cart> Carts { get; set; }
+        public DbSet<CartContent> CartContents { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -20,7 +22,7 @@ namespace TechMarket.Data
                new Category { Id = 2, Name = "Mobile" },
                new Category { Id = 3, Name = "Taplet" }
                );
-            builder.Entity<IdentityUser>().ToTable("Users");
+            builder.Entity<ApplicationUser>().ToTable("Users");
             builder.Entity<IdentityRole>().ToTable("Roles");
             builder.Entity<IdentityUserRole<string>>().ToTable("UserRoles");
             builder.Entity<IdentityUserClaim<string>>().ToTable("UserClaims");

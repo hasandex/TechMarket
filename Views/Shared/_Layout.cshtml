@@ -62,6 +62,13 @@
      
         </nav>
     </header>
+    <div id="popup-container" class="popup-container">
+        <div class="popup-content col-6">
+            <span class="close-button">&times;</span>
+            <h2>About</h2>
+            <p>Teck Market is a leading online platform that offers a wide range of high-quality products at competitive prices. From household essentials to the latest electronics, we have it all. Our user-friendly interface and fast, secure delivery make shopping a breeze.</p>
+        </div>
+    </div>
     <div class="">
         <main role="main" class="pb-3 ">
             @RenderBody()
@@ -120,7 +127,7 @@
                             <a href="#!" class="text-reset">Orders</a>
                         </p>
                         <p>
-                            <a href="#!" class="text-reset">Help</a>
+                            <a href="#!" id="about-btn" class="text-reset">About</a>
                         </p>
                     </div>
                     <!-- Grid column -->
@@ -178,6 +185,25 @@
     <script>
         $(document).ready(function () {
             $('#page').DataTable();
+        });
+    </script>
+    <script>
+        const aboutBtn = document.getElementById('about-btn');
+        const popupContainer = document.getElementById('popup-container');
+        const closeButton = document.querySelector('.close-button');
+
+        aboutBtn.addEventListener('click', () => {
+            popupContainer.classList.add('fade-in-out');
+        });
+
+        closeButton.addEventListener('click', () => {
+            popupContainer.classList.remove('fade-in-out');
+        });
+
+        window.addEventListener('click', (event) => {
+            if (event.target === popupContainer) {
+                popupContainer.classList.remove('fade-in-out');
+            }
         });
     </script>
     @await RenderSectionAsync("Scripts", required: false)
