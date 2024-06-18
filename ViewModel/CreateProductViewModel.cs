@@ -15,6 +15,8 @@ namespace TechMarket.ViewModel
         public IFormFile FormFile { get; set; }
         public int CategoryId { get; set; }
         public IEnumerable<SelectListItem> CategoriesSelectList { get; set; } = new List<SelectListItem>();
+        [Range(1, int.MaxValue, ErrorMessage = "Please enter a positive number")]
+        public int Quantity { get; set; }
 
     }
 }

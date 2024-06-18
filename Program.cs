@@ -31,6 +31,7 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IRatingRepo, RatingRepo>();
 builder.Services.AddScoped<IUserRepo, UserRepo>();
 builder.Services.AddScoped<ICartRepo, CartRepo>();
+builder.Services.AddScoped<IOrderRepo, OrderRepo>();
 builder.Services.AddSignalR();
 var app = builder.Build();
 

@@ -1,4 +1,6 @@
-﻿namespace TechMarket.Repo
+﻿
+
+namespace TechMarket.Repo
 {
     public class CartRepo : ICartRepo
     {
@@ -21,11 +23,7 @@
             {
                 try
                 {
-                    var userCart = GetCartByUserId(_userId);
-                    if (userCart == null)
-                    {
-                        userCart = CreateCart(_userId);
-                    }
+                    var userCart = GetCartByUserId(_userId);//test if the user does not have a cart, then create a new cart for him
                     var cartContent = userCart.CartContent?.FirstOrDefault(c => c.ProductId == productId);
                     if (cartContent != null)
                     {
@@ -38,15 +36,13 @@
                     }
                     cartContent = new CartContent
                     {
-                        // ItemId = itemId,
                         ProductId = productId,
                         CartId = userCart.Id,
-                        ProductPrice = product.Price
+                        ProductPrice = product.Price,
                     };
                     _appDbContext.CartContents.Add(cartContent);
-                    userCart.TotalPrice = userCart.CartContent.Sum(c => c.ProductPrice);
-                    userCart.TotalProducts = userCart.CartContent.Count(c => c.CartId == userCart.Id);
                     _appDbContext.SaveChanges();
+                    IncreaseTotalQuantityAndPrice();
                     transaction.Commit();
                     return 1;
                 }
@@ -57,12 +53,6 @@
                 }
             }
         }
-
-        public int Count(string userId)
-        {
-            throw new NotImplementedException();
-        }
-
         public Cart CreateCart(string userId)
         {
             if (string.IsNullOrEmpty(userId))
@@ -72,6 +62,7 @@
             var newCart = new Cart()
             {
                 UserId = userId,
+                CartContent = new List<CartContent>()   
             };
             _appDbContext.Carts.AddAsync(newCart);
             _appDbContext.SaveChanges();
@@ -86,24 +77,63 @@
                 .FirstOrDefault(c => c.UserId == userId);
             if (cart == null)
             {
-                return null;
+                cart = CreateCart(userId);
             }
             return cart;
         }
 
-        public CartContent GetCartContent(int productId)
-        {
-            throw new NotImplementedException();
-        }
-
         public int RemoveFromCart(int productId)
         {
-            throw new NotImplementedException();
+            var cart = GetCartByUserId(_userId);
+            if(cart != null)
+            {
+                var cartContent = cart.CartContent?.FirstOrDefault(p => p.ProductId == productId);
+                if (cartContent != null)
+                {
+                    cart.TotalPrice -= cartContent.Product.Price * cartContent.Quantity;
+                    cart.TotalProducts -= cartContent.Quantity;
+                    _appDbContext.CartContents.Remove(cartContent);
+                    return _appDbContext.SaveChanges();
+                }
+                return -1;
+            }
+            return -1;
         }
 
-        public double TotalPrice(string userId)
+        public int EmptyCart(string userId)
         {
-            throw new NotImplementedException();
+            var cart = GetCartByUserId(userId);
+            if (cart != null)
+            {
+                var cartContet = cart.CartContent?.Where(cc => cc.CartId == cart.Id).ToList();
+                _appDbContext.CartContents.RemoveRange(cartContet);
+                cart.TotalPrice = 0;
+                cart.TotalProducts = 0;
+                return _appDbContext.SaveChanges();
+            }
+            return -1;
+        }
+
+        public int UpdateCartContentQuantity(int prodyctId,int quantity)
+        {
+            var cart = GetCartByUserId(_userId);
+            if (cart != null)
+            {
+                var cartContent = cart.CartContent.Where(cc => cc.ProductId == prodyctId).SingleOrDefault();
+                cartContent.Quantity = quantity;
+                _appDbContext.SaveChanges();
+                IncreaseTotalQuantityAndPrice();
+                return 1;
+            }
+            return -1;
+        }
+        public int IncreaseTotalQuantityAndPrice()
+        {
+            var cart = GetCartByUserId(_userId);
+            cart.TotalPrice = cart.CartContent.Sum(p => p.Product.Price * p.Quantity);
+            cart.TotalProducts = cart.CartContent.Sum(p => p.Quantity);
+            _appDbContext.SaveChanges();
+            return 1;
         }
     }
 }

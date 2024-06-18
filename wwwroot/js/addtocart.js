@@ -18,7 +18,7 @@ $(document).ready(function () {
                 }
             },
             error: function () {
-                alert("An error occurred while adding the product to the cart.");
+                alert("An error occurred while adding the product to the cart! \nmake sure you are logged in :)");
             }
         });
     });

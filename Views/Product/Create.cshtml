@@ -4,43 +4,47 @@
         ViewData["Title"] = "Create Product";
     }
 
-    <form asp-action="Create" enctype="multipart/form-data" id="createForm" class="row">
-        <div class="col-md-6">
-            <div>
-                <label asp-for="Name" class="form-label mt-4"></label>
-                <input asp-for="Name" type="text" class="form-control" id="userInput">
-                <span asp-validation-for="Name" class="text text-danger"> </span>
-            </div>
-            <div>
-                <label asp-for="Description" class="form-label mt-4"></label>
-                <textarea asp-for="Description" rows="5" cols="50" class="form-control" id="messageInput">
-                </textarea>
-                <span asp-validation-for="Description" class="text text-danger"> </span>
-            </div>
-            <div>
-                <label asp-for="Price" class="form-label mt-4"></label>
-                <input asp-for="Price" type="number" class="form-control">
-                <span asp-validation-for="Price" class="text text-danger"> </span>
-            </div>
-            <div>
-                <label asp-for="CategoryId" class="form-label mt-4"></label>
-                <select asp-for="CategoryId" class="form-select" asp-items="@Model.CategoriesSelectList">
-                </select>
-            </div>
-            <div>
-                <label asp-for="FormFile" class="form-label mt-4"></label>
-                <input asp-for="FormFile" class="form-control" id="FormFile" type="file">
-                <span asp-validation-for="FormFile" class="text text-danger"> </span>
-            </div>
-            <div class="text-center mt-4">
-                <button type="submit" class="btn btn-outline-primary" id="sendButton">Create</button>
-            </div>
+    <form asp-action="Create" enctype="multipart/form-data" id="createForm">
+        <legend class="text-center">Create Product</legend>
+
+        <div>
+            <label asp-for="Name" class="form-label mt-4"></label>
+            <input asp-for="Name" type="text" class="form-control">
+            <span asp-validation-for="Name" class="text text-danger"> </span>
         </div>
-        <div class="col-md-6 d-flex align-items-center justify-content-center">
-            <div>
-                <img src="" class="img-preview rounded d-none" alt="" style="width:400px;height:400px;">
-            </div>
+        <div>
+            <label asp-for="Description" class="form-label mt-4"></label>
+            <textarea asp-for="Description" rows="5" cols="50" class="form-control">
+          </textarea>
+            <span asp-validation-for="Description" class="text text-danger"> </span>
         </div>
+         <div>
+            <label asp-for="CategoryId" class="form-label mt-4"></label>
+            <select asp-for="CategoryId" class="form-select" asp-items="@Model.CategoriesSelectList">
+            </select>
+        </div>
+        <div>
+            <label asp-for="Price" class="form-label mt-4"></label>
+            <input asp-for="Price" type="number" class="form-control">
+            <span asp-validation-for="Price" class="text text-danger"> </span>
+        </div>
+        <div>
+            <label asp-for="Quantity" class="form-label mt-4"></label>
+            <input asp-for="Quantity" type="number" class="form-control">
+            <span asp-validation-for="Quantity" class="text text-danger"> </span>
+        </div>       
+        <div>
+            <label asp-for="FormFile" class="form-label mt-4"></label>
+            <input asp-for="FormFile" class="form-control" id="FormFile" type="file">
+            <span asp-validation-for="FormFile" class="text text-danger"> </span>
+        </div>
+        <div class="text-center mt-4">
+            <img src="" class="img-preview rounded d-none" alt="" style="width:200px;height:200px;">
+        </div>
+        <div class="text-center mt-4">
+            <button type="submit" class="btn bg-dark" style="color: #FFD700">Create</button>
+        </div>
+        
     </form>
 
     <partial name="_ConfirmationModal" />

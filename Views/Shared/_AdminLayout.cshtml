@@ -36,15 +36,15 @@
                 </a>
             </li>
             <li>
-                <a asp-controller="Admin" asp-action="MyProducts">
-                    <i class="fas fa-chart-pie"></i>
-                    <span>Products</span>
-                </a>
-            </li>
-            <li>
                 <a asp-controller="Admin" asp-action="DisplayProducts">
                     <i class="fas fa-pen"></i>
                     <span>posts</span>
+                </a>
+            </li>
+            <li>
+                <a asp-controller="Admin" asp-action="DisplayOrders">
+                    <i class="fas fa-table"></i>
+                    <span>Orders</span>
                 </a>
             </li>
             <li>
@@ -73,7 +73,7 @@
                 <i class="fas fa-user"></i>
                 <div class="data">
                     <p>User</p>
-                    <span>10</span>
+                    <span>@ViewBag.TotalUsers</span>
                 </div>
             </div>
 
@@ -81,14 +81,14 @@
                 <i class="fas fa-pen"></i>
                 <div class="data">
                     <p>Posts</p>
-                    <span>10</span>
+                    <span>@ViewBag.TotalProducts</span>
                 </div>
             </div>
 
             <div class="box">
                 <i class="fas fa-table"></i>
                 <div class="data">
-                    <p>Products</p>
+                    <p>Orders</p>
                     <span>10</span>
                 </div>
             </div>

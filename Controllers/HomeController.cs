@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using TechMarket.Models;
@@ -10,16 +12,22 @@ namespace TechMarket.Controllers
         private readonly IProductRepo _productRepo;
         public readonly ICategoryRepo _categoryRepo;
         private readonly IRatingRepo _ratingRepo;
+        private readonly IEmailSender _emailSender;
 
-        public HomeController(ILogger<HomeController> logger, IProductRepo productRepo, ICategoryRepo categoryRepo, IRatingRepo ratingRepo)
+        public HomeController(ILogger<HomeController> logger,
+            IProductRepo productRepo,
+            ICategoryRepo categoryRepo,
+            IRatingRepo ratingRepo,
+            IEmailSender emailSernder)
         {
             _logger = logger;
             _productRepo = productRepo;
             _categoryRepo = categoryRepo;
             _ratingRepo = ratingRepo;
+            _emailSender = emailSernder;
         }
 
-        public async Task<IActionResult> Index(string? seachName, string? categoryName, int pg = 1)
+        public async Task<IActionResult> Stock(string? seachName, string? categoryName, int pg = 1)
         {
             var products = await _productRepo.GetAllAvailable();
             if (!string.IsNullOrEmpty(seachName))
@@ -64,6 +72,16 @@ namespace TechMarket.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+        [HttpGet]
+        public IActionResult ContactMail()
+        {
+            return View();
+        }
+        [HttpPost]
+        public IActionResult ContactMail(Contact contact)
+        {
+            return View();
         }
     }
 }

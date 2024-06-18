@@ -31,7 +31,7 @@ else
               }
           @foreach (var product in Model)
             {
-                var isAvailable = product.IsAvailable;
+                var isAvailable = product.Status;
                 count = count + 1;
                 var userInfo = await UserManager.FindByIdAsync(product.UserId);
                 var index = userInfo.UserName.IndexOf('@');

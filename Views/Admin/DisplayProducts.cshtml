@@ -16,7 +16,7 @@ else
         <thead>
             <th>User</th>
             <th>Product</th>
-            <th>Details</th>
+            <th>Status</th>
             
         </thead>
         <tbody>
@@ -27,8 +27,30 @@ else
                 var userName = userInfo.UserName.Substring(0, index);
                 <tr>
                     <td>@userName</td>
-                    <td>@product.Name</td>
-                    <td>Details</td>
+                    <td>
+                        <a asp-controller="Product" asp-action="Details" asp-route-id="@product.Id">
+                            @product.Name
+                        </a>
+                    </td>
+                    @if(product.Status == "Accepted")
+                    {
+                        <td class="text-success">  
+                            @product.Status
+                        </td>
+                    }
+                    else if (product.Status == "Rejected")
+                    {
+                        <td class="text-danger">
+                            @product.Status
+                        </td>
+                    }
+                    else
+                    {
+                        <td>
+                            @product.Status
+                        </td>
+                    }
+                   
                   
                 </tr>
             }

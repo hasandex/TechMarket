@@ -3,5 +3,6 @@
     public interface IUserRepo
     {
         Task<IEnumerable<UserFormViewModel>> GetUsers();
+        int Count();
     }
 }

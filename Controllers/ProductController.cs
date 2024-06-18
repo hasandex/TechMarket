@@ -52,7 +52,7 @@ namespace TechMarket.Controllers
             {
                 return BadRequest();
             }
-            TempData["Success"] = "the item has been added successfully";
+            TempData["Success"] = "the product has been added successfully";
             return RedirectToAction("Index");
         }
         [HttpGet]
@@ -71,7 +71,8 @@ namespace TechMarket.Controllers
                 Price = item.Price,
                 CategoryId = item.CategoryId,
                 CategoriesSelectList = _categoryRepo.GetCategoriesSelectList(),
-                Cover = item.Cover
+                Cover = item.Cover,
+                Quantity = item.Quantity,
             };
             return View(viewModel);
         }
@@ -122,14 +123,15 @@ namespace TechMarket.Controllers
             ViewBag.productRate = productRate;
             return View(product);
         }
-        public IActionResult RateProduct(string ratingValue,int productId)
+        public IActionResult RateProduct(string rating, int productId)
         {
-           var isRated = _ratingRepo.RateProduct(Int32.Parse(ratingValue),productId,_userService.GetUserId());
+           var isRated = _ratingRepo.RateProduct(Int32.Parse(rating),productId,_userService.GetUserId());
            if(isRated < 0)
             {
                 return BadRequest();
             }
-           return Ok();
+            int id = productId;
+            return RedirectToAction(controllerName:"Home",actionName:"Stock");
         }
     }
 }

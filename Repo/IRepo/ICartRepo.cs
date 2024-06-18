@@ -4,10 +4,12 @@
     {
         Cart CreateCart(string userId);
         Cart GetCartByUserId(string userId);
-        CartContent GetCartContent(int productId);
         int AddToCart(int productId);
         int RemoveFromCart(int productId);
-        double TotalPrice(string userId);
-        int Count(string userId);
+        int EmptyCart(string userId);
+        int UpdateCartContentQuantity(int productId,int quantity);
+      //  double TotalPrice(string userId);
+      // int Count(string userId);
+      // UserCartViewModel UserCartContent(string userId);
     }
 }

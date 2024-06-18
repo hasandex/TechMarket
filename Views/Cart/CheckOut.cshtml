@@ -1,0 +1,47 @@
+﻿@model Order
+@{
+    ViewData["Title"] = "Add Order";
+}
+@{
+    string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+}
+<div class="container">
+
+<form asp-controller="Cart" asp-action="CheckOut">
+        <input asp-for="UserId" value="@userId" hidden />
+        <input asp-for="CartId" value="@ViewBag.cartId" hidden />
+
+    <legend class="text-center">Create Product</legend>
+    <div>
+        <label asp-for="Email" class="form-label mt-4"></label>
+        <input asp-for="Email" type="text" class="form-control">
+        <span asp-validation-for="Email" class="text text-danger"> </span>
+    </div>
+    <div>
+        <label asp-for="City" class="form-label mt-4"></label>
+        <input asp-for="City" type="text" class="form-control">
+        <span asp-validation-for="City" class="text text-danger"> </span>
+    </div>
+    <div>
+        <label asp-for="Address" class="form-label mt-4"></label>
+        <input asp-for="Address" type="text" class="form-control">
+        <span asp-validation-for="Address" class="text text-danger"> </span>
+    </div>
+    <div>
+        <label asp-for="PhoneNumber" class="form-label mt-4"></label>
+        <input asp-for="PhoneNumber" type="text" class="form-control">
+        <span asp-validation-for="PhoneNumber" class="text text-danger"> </span>
+    </div>
+    <div>
+        <label asp-for="PhoneNumber2" class="form-label mt-4"></label>
+        <input asp-for="PhoneNumber2" type="text" class="form-control" placeholder="Optional">
+        <span asp-validation-for="PhoneNumber2" class="text text-danger"> </span>
+    </div>
+  
+    <div class="text-center mt-4">
+        <button type="submit" class="btn bg-dark" style="color: #FFD700">Send</button>
+    </div>
+
+</form>
+
+</div>

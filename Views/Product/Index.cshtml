@@ -1,4 +1,5 @@
 ﻿@model IEnumerable<Product>
+
 <div class="mt-2 container">
 @{
     ViewData["Title"] = "Products";
@@ -11,7 +12,10 @@
             </div>
         }
         <div class="d-flex justify-content-center mb-3">
-            <a asp-action="Create" class="btn btn-primary">Create Product</a>
+            <a asp-action="Create" class="btn bg-dark" style="color: #FFD700">
+                Create Product
+                <i class="bi bi-plus-circle"></i>
+            </a>
         </div>
     </div>
 
@@ -24,26 +28,23 @@
 }
 else
 {
-    <table class="table table-hover" id="page">
+        <table style="border-collapse: separate;
+        border-spacing:5px;" id="page">
         <thead>
-            <tr>
-                <th scope="col">Name</th>
-                @* <th scope="col">Description</th> *@
-                <th scope="col">Category</th>
-                <th scope="col">Price</th>
-                <th scope="col">Cover</th>
-                <th scope="col">Actions</th>
-                <th scope="col">Status</th>
-            </tr>
+                <th>Product</th>
+                <th>Category</th>
+                <th>Price</th>
+                <th>Cover</th>
+                <th>Actions</th>
+                <th>Status</th>
         </thead>
         <tbody>
             @foreach (var product in Model)
             {
-                <tr class="">
-                    <td scope="row">@product.Name</td>
-                   @*  <td style="width:500px">@product.Description</td> *@
+                <tr>
+                    <td>@product.Name</td>
                     <td>@product.Category.Name</td>
-                    <td>@product.Price</td>
+                    <td>@product.Price $</td>
                     <td>
                         <img src="@($"{Settings.ItemImageStorePath}/{@product.Cover}")" class="rounded" style="width:100px;height:100px;" />
                     </td>
@@ -55,36 +56,24 @@ else
                         </a>
                     </td>
                     
-                        @if(product.IsAvailable == "Accepted")
+                        @if(product.Status == "Accepted")
                         {
                             <td class="text text-success">
-                           @product.IsAvailable
+                           @product.Status
                         </td>
                     }
-                    else if (product.IsAvailable == "Rejected")
+                    else if (product.Status == "Rejected")
                     {
                         <td class="text text-danger">
-                            @product.IsAvailable
+                            @product.Status
                         </td>
                     }
                     else
                     {
                         <td>
-                            @product.IsAvailable
+                            @product.Status
                         </td>
                     }
-
-                    @* <td>
-                        <form method="post" asp-controller="Cart" asp-action="Add"> 
-                            <input type="hidden" name="itemId" value="@product.Id" />
-                            <div class="input-group">
-                                <input type="number" name="quantity" class="form-control" style="width:50px;" min="1" value="1" />
-                                <button id="addItem" type="submit" class="btn btn-info rounded rounded-3 ms-2">
-                                    <i class="bi bi-cart-check"></i>
-                                </button>
-                            </div>
-                        </form>
-                    </td> *@
                 </tr>
             }
         </tbody>
@@ -94,3 +83,11 @@ else
 @section Scripts {
     <script src="~/js/delete-product.js"></script>
 }
+<style>
+    th, td {
+        color:white;
+        background-color: #123;
+        border-radius: 8px;
+        align-items:center;
+    }
+</style>

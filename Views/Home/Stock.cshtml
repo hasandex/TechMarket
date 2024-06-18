@@ -15,13 +15,13 @@
                     <div class="collapse navbar-collapse" id="navbarNav">
                         <ul class="navbar-nav flex-column" @* style="background-color:aquamarine" *@>
                             <li class="nav-item">
-                                <a style="color:darkblue" class="nav-link" asp-controller="Home" asp-action="Index" asp-route-categoryName="Computer"><strong>Computer</strong></a>
+                                <a style="color:darkblue" class="nav-link" asp-controller="Home" asp-action="Stock" asp-route-categoryName="Computer"><strong>Computer</strong></a>
                             </li>
                             <li class="nav-item">
-                                <a style="color:darkblue" class="nav-link" asp-controller="Home" asp-action="Index" asp-route-categoryName="Laptop"><strong>Laptop</strong></a>
+                                <a style="color:darkblue" class="nav-link" asp-controller="Home" asp-action="Stock" asp-route-categoryName="Laptop"><strong>Laptop</strong></a>
                             </li>
                             <li class="nav-item">
-                                <a style="color:darkblue" class="nav-link" asp-controller="Home" asp-action="Index" asp-route-categoryName="Mobile"><strong>Mobile</strong></a>
+                                <a style="color:darkblue" class="nav-link" asp-controller="Home" asp-action="Stock" asp-route-categoryName="Mobile"><strong>Mobile</strong></a>
                             </li>
                             <li class="nav-item">
                                 <a style="color:darkmagenta" class="nav-link" href="#"><strong>Services</strong></a>
@@ -30,9 +30,28 @@
                                 <a style="color:darkmagenta" class="nav-link" href="#"><strong>Contact</strong></a>
                             </li>
                         </ul>
-                    </div>
+                    </div>            
                 </div>
             </nav>
+            @* <div class="text-center bg-danger">
+                <ul class="navbar-nav flex-column">
+                    <li class="nav-item">
+                        <a style="color:darkblue" class="nav-link" asp-controller="Home" asp-action="Stock" asp-route-categoryName="Computer"><strong>Computer</strong></a>
+                    </li>
+                    <li class="nav-item">
+                        <a style="color:darkblue" class="nav-link" asp-controller="Home" asp-action="Stock" asp-route-categoryName="Laptop"><strong>Laptop</strong></a>
+                    </li>
+                    <li class="nav-item">
+                        <a style="color:darkblue" class="nav-link" asp-controller="Home" asp-action="Stock" asp-route-categoryName="Mobile"><strong>Mobile</strong></a>
+                    </li>
+                    <li class="nav-item">
+                        <a style="color:darkmagenta" class="nav-link" href="#"><strong>Services</strong></a>
+                    </li>
+                    <li class="nav-item">
+                        <a style="color:darkmagenta" class="nav-link" href="#"><strong>Contact</strong></a>
+                    </li>
+                </ul>
+            </div> *@
         </div>
         <div class="col-9">
             @{
@@ -83,12 +102,14 @@
                     <a asp-controller="Product" asp-action="Details" asp-route-id="@viewmodel.product.Id">
                          <img src="@($"{Settings.ItemImageStorePath}/{viewmodel.product.Cover}")" alt="" class="img-fluid d-block mx-auto mb-3">
                     </a>
-                    <h5><a href="@Url.Action("ProductDetails", "ProductController", new { id = viewmodel.product.Id })">@viewmodel.product.Name</a></h5>
-                   <p class="small text-muted font-italic">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                    <h5><a asp-controller="Product" asp-action="Details" asp-route-id="@viewmodel.product.Id">@viewmodel.product.Name</a></h5>
+                   <p><strong>@viewmodel.product.Price $</strong> </p>
+                   <p class="small text-muted font-italic" style="overflow:hidden; width:100%; height:40px">@viewmodel.product.Description</p>
                       @{
                          if (viewmodel.ProductRate == -1)
                              {
                             <p>Not Rated yet</p>
+                                            <i class="fa fa-star-o- text-success"></i>
                              }
                          else
                              {
@@ -100,12 +121,12 @@
 
                                      @for (int i = 0; i < wholeStar; i++)
                                        {
-                                          <li class="list-inline-item m-0"><i class="fa fa-star text-success"></i></li>
+                                                    <li class="list-inline-item m-0"><i class="fa fa-star text-warning"></i></li>
                                        }
 
                                      @if (hasHalfStar)
                                        {
-                                        <li class="list-inline-item m-0"><i class="fa fa-star-half text-success"></i></li>
+                                                    <li class="list-inline-item m-0"><i class="fa fa-star-half text-warning"></i></li>
                                         }
                                  </ul>
                                }

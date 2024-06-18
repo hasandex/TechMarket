@@ -1,6 +1,7 @@
 ﻿<ul class="navbar-nav ms-auto">
     @if (SignInManager.IsSignedIn(User))
     {
+        
 
         var user = await UserManager.GetUserAsync(User);
         @if (await UserManager.IsInRoleAsync(user, ClsRoles.roleAdmin))
@@ -17,11 +18,14 @@
             <a id="manage" class="nav-link text-light" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">@userName</a>
         </li>
         <li class="nav-item">
-            <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+            <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Stock", "Home", new { area = "" })">
                 <button id="logout" type="submit" class="nav-link btn btn-link text-light border-0">Logout</button>
             </form>
         </li>
-       
+
+        <div style="width: 50px;height: 50px;border-radius: 50%;overflow: hidden;border: 3px solid white;flex-shrink: 0;">
+            <img src="/assets//images/dell.jpg" style=" width: 100%;" alt="profile">
+        </div>
 
     }
     else

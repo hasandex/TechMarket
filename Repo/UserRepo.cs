@@ -5,9 +5,20 @@ namespace TechMarket.Repo
     public class UserRepo : IUserRepo
     {
         private readonly UserManager<ApplicationUser> _userManager;
-        public UserRepo(UserManager<ApplicationUser> userManager)
+        private readonly AppDbContext _appDbContext;
+        public UserRepo(UserManager<ApplicationUser> userManager,AppDbContext appDbContext)
         {
             _userManager = userManager;
+            _appDbContext = appDbContext;
+        }
+
+        public int Count()
+        {
+            if (_appDbContext.Users.Any())
+            {
+                return _appDbContext.Users.Count();
+            }
+            return 0;
         }
 
         async Task<IEnumerable<UserFormViewModel>> IUserRepo.GetUsers()

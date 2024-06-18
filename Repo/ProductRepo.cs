@@ -1,5 +1,6 @@
 ﻿
 using Microsoft.AspNetCore.Hosting;
+using TechMarket.Migrations;
 
 namespace TechMarket.Repo
 {
@@ -25,22 +26,37 @@ namespace TechMarket.Repo
             {
                 return -1;
             }
-            product.IsAvailable = "Rejected";
+            product.Status = "Rejected";
             return _appDbContext.SaveChanges();
         }
         //this method for Admin Index
+        public int MakeAvailable(int id)
+        {
+            var product = GetById(id);
+            if (product == null)
+            {
+                return -1;
+            }
+            product.Status = "Accepted";
+            return _appDbContext.SaveChanges();
+        }
+
+        //this method for Admin Index
         public async Task<int> GetCountAllNewProducts()
         {
-            return await _appDbContext.Products.Include(p => p.Category)
-               .Where(p => p.IsAvailable == "To Be Determined")
+            return await _appDbContext.Products.Where(p => p.Status == "To Be Determined")
                .AsNoTracking()
                .CountAsync();
+        }
+        public async Task<int> GetCountAllProducts()
+        {
+            return await _appDbContext.Products.AsNoTracking().CountAsync();
         }
         //this method for Home Index
         public async Task<IEnumerable<Product>> GetAllAvailable()
         {
             return await _appDbContext.Products.Include(p => p.Category)
-                .Where(p=>p.IsAvailable == "Accepted")
+                .Where(p=>p.Status == "Accepted")
                 .AsNoTracking()
                 .ToListAsync();
         }
@@ -75,6 +91,7 @@ namespace TechMarket.Repo
                 CategoryId = viewModel.CategoryId,
                 Price = viewModel.Price,
                 Cover = _imageService.StoreImage(viewModel.FormFile, Settings.ItemImageStorePath),
+                Quantity = viewModel.Quantity,
             };
             _appDbContext.Products.Add(product);
             return _appDbContext.SaveChanges();
@@ -95,6 +112,7 @@ namespace TechMarket.Repo
                 item.Description = viewModel.Description;
                 item.CategoryId = viewModel.CategoryId;
                 item.Price = viewModel.Price;
+                item.Quantity = viewModel.Quantity;
                 _appDbContext.Update(item);
                 return _appDbContext.SaveChanges();
             }
@@ -116,17 +134,5 @@ namespace TechMarket.Repo
                 return 0;
             }
         }
-        public int MakeAvailable(int id)
-        {
-            var product = GetById(id);
-            if (product == null)
-            {
-                return -1;
-            }
-            product.IsAvailable = "Accepted";
-            return _appDbContext.SaveChanges();
-        }
-
-       
     }
 }

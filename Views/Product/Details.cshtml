@@ -31,89 +31,73 @@
 
                             @for (int i = 0; i < wholeStar; i++)
                             {
-                                <li class="list-inline-item m-0"><i class="fa fa-star text-success"></i></li>
+                                <li class="list-inline-item m-0"><i class="fa fa-star text-warning"></i></li>
                             }
 
                             @if (hasHalfStar)
                             {
-                                <li class="list-inline-item m-0"><i class="fa fa-star-half text-success"></i></li>
+                                <li class="list-inline-item m-0"><i class="fa fa-star-half text-warning"></i></li>
                             }
                         </ul>
                     }
                 </div>
-                @{
-                    var userInfo = await UserManager.FindByIdAsync(Model.UserId);
-                    var index = userInfo.UserName.IndexOf('@');
-                    var userName = userInfo.UserName.Substring(0, index);
-                }
-                <p class="my-3"><strong>User:</strong> @userName</p>
-                <a href="#" class="btn btn-primary btn-sm my-3">Add to Cart</a>
+                <p class="my-3"><strong>Quantity Available :</strong> @Model.Quantity </p>
+                <button class="btn btn-primary btn-add-to-cart" data-product-id="@Model.Id">
+                    <i class="bi bi-cart-plus"></i>
+                </button>
                 @if (User.Identity.IsAuthenticated)
                 {
-                    <form id="rating-form" class="my-3">
+                    <form asp-asp-controller="Product" asp-action="RateProduct" id="rating-form" class="my-3">
+                        <input name="productId" value="@Model.Id" hidden />
                         <div class="star-rating mb-2">
-                            <input type="radio" id="star5" name="rating" value="5" data-rate="5" />
-                            <label id="star5" for="star5" title="5 stars" data-rate="5">&#9733;</label>
-                            <input type="radio" id="star4" name="rating" value="4" data-rate="4" />
-                            <label id="star4" for="star4" title="4 stars" data-rate="4">&#9733;</label>
-                            <input type="radio" id="star3" name="rating" value="3" data-rate="3" />
-                            <label id="star3" for="star3" title="3 stars" data-rate="3">&#9733;</label>
-                            <input type="radio" id="star2" name="rating" value="2" data-rate="2" />
-                            <label id="star2" for="star2" title="2 stars" data-rate="2">&#9733;</label>
-                            <input type="radio" id="star1" name="rating" value="1" data-rate="1" />
-                            <label id="star1" for="star1" title="1 star" data-rate="1">&#9733;</label>
+                            <select class="bg-dark w-100" style="color: #FFD700" name="rating">
+                                <option value="1">&#9733;</option>
+                                <option value="2">&#9733;&#9733;</option>
+                                <option value="3">&#9733;&#9733;&#9733;</option>
+                                <option value="4">&#9733;&#9733;&#9733;&#9733;</option>
+                                <option value="5">&#9733;&#9733;&#9733;&#9733;&#9733;</option>
+                            </select>
+                            
                         </div>
                         <div>
-                            <button type="button" class="btn btn-warning" id="submit-rating" disabled>Send Rating</button>
+                            <button type="submit" class="btn bg-dark" id="submit-rating" style="color: #FFD700">Send Rating</button>
                         </div>
                         @if (ViewBag.userRate != -1)
                         {
-                            <h5 class="mt-3 text text-warning">You have rated this product with @ViewBag.userRate stars</h5>
+                            <h5 class="mt-3 text" style="color:black">You have rated this product with @ViewBag.userRate stars</h5>
                         }
                     </form>
                 }
-            </div>
-        </div>
-@* <div class="card border-success rounded-4 mt-5 overflow-hidden">
-    <div class="card-body p-0">
-        <div class="row">
-            <div class="col-md-8 px-5 py-4 d-flex flex-column justify-content-between">
-                <div>
-                    <input type="hidden" value="@Model.Id" id="productId" />
-                    <input type="hidden" value="@ViewBag.userRate" id="userRate" />
-                    <h1 class="text-dark fw-bolder">@Model.Name</h1>
-                    <span class="badge bg-info fs-5 mb-4">@Model.Category.Name</span>
-                    <p class="fs-5">@Model.Description</p>
-                </div>
-                <div>
-                    <h1>@Model.Price$</h1>
-                </div>
-                <div>
-                    @{
-                        var userInfo = await UserManager.FindByIdAsync(Model.UserId);
-                        var index = userInfo.UserName.IndexOf('@');
-                        var userName = userInfo.UserName.Substring(0, index);
-                                    <h5>@userName</h5>
-                    }
-                </div>
-                @if (ViewBag.productRate != -1)
+                @if (User.Identity.IsAuthenticated && await UserManager.IsInRoleAsync(await UserManager.GetUserAsync(User), ClsRoles.roleAdmin))
                 {
-                    <h5 class="mt-2 text text-warning">Product Rate is @ViewBag.productRate</h5>
-                }
+                    if (Model.Status == "To Be Determined")
+                    {
+                        <div>
+                            <a class="btn btn-outline-success" asp-controller="Admin" asp-action="MakeProductAvailable" asp-route-id="@Model.Id">Approve</a>
+                            <a class="btn btn-outline-danger" asp-controller="Admin" asp-action="RejectProduct" asp-route-id="@Model.Id">Reject</a>
+                        </div>
+                    }
+                    else if (Model.Status == "Accepted")
+                    {
+                        <p class="text-success"><strong>@Model.Status</strong></p>
+                    }
+                    else if (Model.Status == "Rejected")
+                    {
+                        <p class="text-danger"><strong>@Model.Status</strong></p>
+                    }
+  
+                 }
             </div>
-            <div class="col-md-4" ">
-                <img src="@($"{Settings.ItemImageStorePath}/{Model.Cover}")" alt="@Model.Name" class="w-100" />
-            </div>
+          
         </div>
-    </div>
-</div> *@
-
  
+       
  
 </div>
 
 @section Scripts{
-    <script>
+        <script src="~/js/addtocart.js"></script>
+   @*  <script>
         // Get all the radio buttons and labels
         const ratingRadios = $('.star-rating input[type="radio"]');
         const ratingLabels = $('.star-rating label');
@@ -152,5 +136,20 @@
                 }
             });
         }
-    </script>
+    </script> *@
 }
+
+
+
+
+
+    @* <input type="radio" id="star5" name="rating" value="5" data-rate="5" />
+    <label id="star5" for="star5" title="5 stars" data-rate="5"></label>
+    <input type="radio" id="star4" name="rating" value="4" data-rate="4" />
+    <label id="star4" for="star4" title="4 stars" data-rate="4">&#9733;</label>
+    <input type="radio" id="star3" name="rating" value="3" data-rate="3" />
+    <label id="star3" for="star3" title="3 stars" data-rate="3">&#9733;</label>
+    <input type="radio" id="star2" name="rating" value="2" data-rate="2" />
+    <label id="star2" for="star2" title="2 stars" data-rate="2">&#9733;</label>
+    <input type="radio" id="star1" name="rating" value="1" data-rate="1" />
+    <label id="star1" for="star1" title="1 star" data-rate="1">&#9733;</label> *@

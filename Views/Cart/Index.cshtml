@@ -1,0 +1,87 @@
+﻿@model Cart
+@{
+    ViewData["Title"] = "User Cart";
+}
+@if (ViewData["orderIsAdded"] != null)
+{
+    <div>
+        <div class="alert alert-success">
+            @ViewData["orderIsAdded"]
+        </div>
+    </div>
+}
+
+<div class="container mt-1">
+    @if (ViewData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">
+            @ViewData["ErrorMessage"]
+            </div>
+    }
+</div>
+
+<div class="text-center align-items-center">
+    <div class="">
+        <h1>Mange your cart</h1>
+        <h3>Total Products : <strong>@Model.TotalProducts</strong></h3>
+        <h3>Total Price : <strong>@Model.TotalPrice $</strong></h3>
+        <p>after checking out you can manage your orders right <a href="#">here</a></p>
+    </div>
+    <div class="bg-dark text-white container border" style="border: solid; border-radius:10px;">
+        <table class="table text-white">
+            <tbody>
+                @foreach (var cartContent in Model.CartContent)
+                {
+                    <tr>
+                       
+                        <td>
+                            <a asp-controller="Product" asp-action="Details" asp-route-id="@cartContent.Product.Id">
+                                @cartContent.Product.Name
+                            </a>
+                        </td>
+
+
+                        <td>@cartContent.Product.Price $</td>
+                        <td>
+                            
+                            <form asp-action="UpdateQuantity" method="post">
+                                <input name="productId" type="hidden" value="@cartContent.ProductId" />
+                               <div style="gap:20px" class="d-flex text-center justify-content-center">
+                                    <input name="quantity" style="font-size:25px;" class="w-25" asp-for="@cartContent.Quantity" type="number" />
+                                    <button type="submit" class="btn btn-info" style="">Add</button>
+                               </div>
+                                
+                            </form>
+                           
+                           
+                        </td>
+                        <td>
+                            <a class="btn btn-danger" asp-controller="Cart" asp-action="RemoveFromCart" asp-route-productId="@cartContent.Product.Id">
+                                <i class="bi bi-trash"></i>
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <h2>Total Cart : <span>@Model.TotalPrice</span></h2>
+    </div>
+
+    <a asp-controller="Cart" asp-action="CheckOut" class="btn btn-dark mt-4" style="color: #FFD700">Check Out</a>
+    
+    <partial name="_ConfirmationDeleteModal" />
+
+</div>
+@* 
+                            @section Scripts{
+                                <script>
+        function updateCart() {
+            var quantityInput = document.getElementById('quantityInput');
+            var productIdInput = document.getElementById('productIdInput');
+            var quantity = quantityInput.value;
+            var productId = productIdInput.value;
+            var updateUrl = '@Url.Action("UpdateQuantity")' + '?quantity=' + quantity + '&productId=' + productId;
+            window.location.href = updateUrl;
+        }
+        </script>
+                            } *@

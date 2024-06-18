@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace TechMarket.Controllers
 {
+    [Authorize(Roles = ClsRoles.roleAdmin)]
     public class AdminController : Controller
     {
         private readonly IProductRepo _productRepo;
@@ -26,7 +28,7 @@ namespace TechMarket.Controllers
             {
                 return BadRequest();
             }
-            return RedirectToAction("Index");
+            return RedirectToAction("DisplayProducts");
         }
         public IActionResult RejectProduct(int id)
         {
@@ -35,7 +37,7 @@ namespace TechMarket.Controllers
             {
                 return BadRequest();
             }
-            return RedirectToAction("Index");
+            return RedirectToAction("DisplayProducts");
         }
         public IActionResult Dashboard()
         {
@@ -45,6 +47,8 @@ namespace TechMarket.Controllers
         {
             //ViewBag.Count = await _productRepo.GetCountAllNewProducts();
             var products = await _productRepo.GetAll();
+            ViewBag.TotalUsers = _userRepo.Count();
+            ViewBag.TotalProducts = await _productRepo.GetCountAllProducts();
             return View(products);
         }
         public async Task<IActionResult> DisplayUsers()
@@ -56,6 +60,5 @@ namespace TechMarket.Controllers
         {
             return View(await _productRepo.GetAll(_userService.GetUserId()));
         }
-
     }
 }

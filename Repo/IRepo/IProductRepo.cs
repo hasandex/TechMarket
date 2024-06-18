@@ -4,6 +4,7 @@ namespace TechMarket.Repo.IRepo
     public interface IProductRepo
     {
         Task<int> GetCountAllNewProducts();
+        Task<int> GetCountAllProducts();
         Task<IEnumerable<Product>> GetAllAvailable();
         Task<IEnumerable<Product>> GetAll();
         Task<IEnumerable<Product>> GetAll(string userId);
