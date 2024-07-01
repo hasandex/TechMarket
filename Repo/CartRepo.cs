@@ -1,5 +1,7 @@
 ﻿
 
+using Microsoft.CodeAnalysis.QuickInfo;
+
 namespace TechMarket.Repo
 {
     public class CartRepo : ICartRepo
@@ -7,14 +9,17 @@ namespace TechMarket.Repo
         private readonly AppDbContext _appDbContext;
         private readonly IUserService _userService;
         private readonly string _userId;
-        public CartRepo(AppDbContext appDbContext, IUserService userService)
+        private readonly IProductRepo _productRepo;
+        public CartRepo(AppDbContext appDbContext, IUserService userService,IProductRepo productRepo)
         {
             _appDbContext = appDbContext;
+            _productRepo = productRepo;
             _userService = userService;
             _userId = _userService.GetUserId();
             if (string.IsNullOrEmpty(_userId))
             {
-                throw new UnauthorizedAccessException("You must be logged in to perform this action");
+                return;
+                //throw new UnauthorizedAccessException("You must be logged in to perform this action");
             }
         }
         public int AddToCart(int productId)
@@ -33,6 +38,10 @@ namespace TechMarket.Repo
                     if (product == null)
                     {
                         throw new ArgumentException($"Item with ID {productId} not found");
+                    }
+                    if(product.Quantity <= 0)
+                    {
+                        return 0;
                     }
                     cartContent = new CartContent
                     {
@@ -120,6 +129,11 @@ namespace TechMarket.Repo
             if (cart != null)
             {
                 var cartContent = cart.CartContent.Where(cc => cc.ProductId == prodyctId).SingleOrDefault();
+                var isOutOfStock = IsOutOfStock(prodyctId,quantity);
+                if (isOutOfStock)
+                {
+                    return 0;
+                }
                 cartContent.Quantity = quantity;
                 _appDbContext.SaveChanges();
                 IncreaseTotalQuantityAndPrice();
@@ -134,6 +148,13 @@ namespace TechMarket.Repo
             cart.TotalProducts = cart.CartContent.Sum(p => p.Quantity);
             _appDbContext.SaveChanges();
             return 1;
+        }
+        public bool IsOutOfStock(int productId , int quantity)
+        {
+            var product = _productRepo.GetById(productId);
+            if(product.Quantity < quantity)
+                return true;
+            return false;
         }
     }
 }

@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using TechMarket.Data;
 using Microsoft.Extensions.DependencyInjection;
 using TechMarket.Hubs;
+using Microsoft.AspNetCore.Identity.UI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +17,7 @@ options.UseSqlServer(builder.Configuration.GetConnectionString("MyCon")));
 
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 {
+    options.SignIn.RequireConfirmedAccount = true;
     options.Password.RequireUppercase = false;
     options.Password.RequiredLength = 6;
     options.Password.RequireNonAlphanumeric = false;
@@ -32,6 +34,8 @@ builder.Services.AddScoped<IRatingRepo, RatingRepo>();
 builder.Services.AddScoped<IUserRepo, UserRepo>();
 builder.Services.AddScoped<ICartRepo, CartRepo>();
 builder.Services.AddScoped<IOrderRepo, OrderRepo>();
+builder.Services.AddScoped<ICommentRepo, CommentRepo>();
+builder.Services.AddScoped<IEmailSender, EmailService>();
 builder.Services.AddSignalR();
 var app = builder.Build();
 

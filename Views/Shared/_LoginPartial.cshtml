@@ -1,30 +1,36 @@
 ﻿<ul class="navbar-nav ms-auto">
     @if (SignInManager.IsSignedIn(User))
     {
-        
-
         var user = await UserManager.GetUserAsync(User);
-        @if (await UserManager.IsInRoleAsync(user, ClsRoles.roleAdmin))
-        {
-            <li class="nav-item">
-                <a id="manage" class="nav-link text-light" asp-controller="Admin" asp-action="DisplayProducts" title="Dashboard">Dashboard</a>
-            </li>
-        }
-
-        string email = @UserManager.GetUserName(User)!;
-        int index = email.IndexOf('@');
-        string userName = email.Substring(0, index);
-        <li class="nav-item">
-            <a id="manage" class="nav-link text-light" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">@userName</a>
-        </li>
-        <li class="nav-item">
-            <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Stock", "Home", new { area = "" })">
-                <button id="logout" type="submit" class="nav-link btn btn-link text-light border-0">Logout</button>
-            </form>
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                @user?.FName
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                @if (await UserManager.IsInRoleAsync(user, ClsRoles.roleAdmin))
+                {
+                    <li><a class="dropdown-item" asp-controller="Admin" asp-action="Index" title="Dashboard">Dashboard</a></li>
+                }
+                <li><a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Settings</a></li>
+                <li>
+                    <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Stock", "Home", new { area = "" })">
+                        <button id="logout" type="submit" class="dropdown-item">Logout</button>
+                    </form>
+                </li>
+            </ul>
         </li>
 
         <div style="width: 50px;height: 50px;border-radius: 50%;overflow: hidden;border: 3px solid white;flex-shrink: 0;">
-            <img src="/assets//images/dell.jpg" style=" width: 100%;" alt="profile">
+            @if(UserManager.GetUserAsync(User).Result.ProfilePicture != null)
+            {
+                <img src="data:image/*;base64,@(Convert.ToBase64String(UserManager.GetUserAsync(User).Result.ProfilePicture))" style="height:100%; width: 100%;" alt="profile">
+            }
+            else
+            {
+                <img src="~/assets/night.jpg" style="height:100%; width: 100%;" alt="profile">
+
+            }
+
         </div>
 
     }

@@ -4,6 +4,8 @@
     ViewData["Title"] = "Manage Email";
     ViewData["ActivePage"] = ManageNavPages.Email;
 }
+<div class="container">
+
 
 <h3>@ViewData["Title"]</h3>
 <partial name="_StatusMessage" for="StatusMessage" />
@@ -26,7 +28,7 @@
                 <div class="form-floating mb-3">
                     <input asp-for="Email" class="form-control" placeholder="Please enter your email." disabled />
                     <label asp-for="Email" class="form-label"></label>
-                    <button id="email-verification" type="submit" asp-page-handler="SendVerificationEmail" class="btn btn-link">Send verification email</button>
+                    <button id="email-verification" type="submit" asp-page-handler="SendVerificationEmail" style="text-decoration:none;" class="btn btn-link">Send verification email</button>
                 </div>
             }
             <div class="form-floating mb-3">
@@ -34,11 +36,12 @@
                 <label asp-for="Input.NewEmail" class="form-label"></label>
                 <span asp-validation-for="Input.NewEmail" class="text-danger"></span>
             </div>
-            <button id="change-email-button" type="submit" asp-page-handler="ChangeEmail" class="w-100 btn btn-lg btn-primary">Change email</button>
+                <button id="change-email-button" type="submit" asp-page-handler="ChangeEmail" class="btn btn-dark" style="color: #FFD700">Change Email</button>
         </form>
+            <a asp-area="Identity" asp-page="/Account/Manage/Index" class="btn btn-dark mt-2" style="color: #FFD700"> Return</a>
     </div>
 </div>
-
+</div>
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }

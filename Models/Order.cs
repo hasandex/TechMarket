@@ -18,5 +18,6 @@ namespace TechMarket.Models
         public string Email {  get; set; }
         public Cart? Cart { get; set; }
         public ICollection<OrderProduct>? OrderProducts { get; set; }
+        public ApplicationUser? User { get; set; }
     }
 }

@@ -3,7 +3,7 @@
     <div class="row">
         <div class="col-3">
             <div class="text-center">
-                <img src="/assets/poster-231_512.gif" alt="Alternate Text" width="150px" />
+                <img src="/assets/poster-231_512.gif" alt="Alternate Text" width="100px" />
             </div>
             <br />
             <!-- Left side menu -->
@@ -18,7 +18,7 @@
                                 <a style="color:darkblue" class="nav-link" asp-controller="Home" asp-action="Stock" asp-route-categoryName="Computer"><strong>Computer</strong></a>
                             </li>
                             <li class="nav-item">
-                                <a style="color:darkblue" class="nav-link" asp-controller="Home" asp-action="Stock" asp-route-categoryName="Laptop"><strong>Laptop</strong></a>
+                                <a style="color:darkblue" class="nav-link" asp-controller="Home" asp-action="Stock" asp-route-categoryName="Tablet"><strong>Tablet</strong></a>
                             </li>
                             <li class="nav-item">
                                 <a style="color:darkblue" class="nav-link" asp-controller="Home" asp-action="Stock" asp-route-categoryName="Mobile"><strong>Mobile</strong></a>
@@ -33,25 +33,6 @@
                     </div>            
                 </div>
             </nav>
-            @* <div class="text-center bg-danger">
-                <ul class="navbar-nav flex-column">
-                    <li class="nav-item">
-                        <a style="color:darkblue" class="nav-link" asp-controller="Home" asp-action="Stock" asp-route-categoryName="Computer"><strong>Computer</strong></a>
-                    </li>
-                    <li class="nav-item">
-                        <a style="color:darkblue" class="nav-link" asp-controller="Home" asp-action="Stock" asp-route-categoryName="Laptop"><strong>Laptop</strong></a>
-                    </li>
-                    <li class="nav-item">
-                        <a style="color:darkblue" class="nav-link" asp-controller="Home" asp-action="Stock" asp-route-categoryName="Mobile"><strong>Mobile</strong></a>
-                    </li>
-                    <li class="nav-item">
-                        <a style="color:darkmagenta" class="nav-link" href="#"><strong>Services</strong></a>
-                    </li>
-                    <li class="nav-item">
-                        <a style="color:darkmagenta" class="nav-link" href="#"><strong>Contact</strong></a>
-                    </li>
-                </ul>
-            </div> *@
         </div>
         <div class="col-9">
             @{
@@ -95,12 +76,12 @@
               @foreach (var viewmodel in Model)
                {
                <input id="productId" value="@viewmodel.product.Id" hidden />
-               <div class="col-lg-3 col-md-6 mb-4 mb-lgs-0">
+               <div class="col-lg-3 col-md-12 mb-4 mb-lgs-0">
                    <!-- Card-->
                   <div class="card card_index rounded shadow-sm border-0">
                     <div class="card-body card_index_body p-4" style="">
                     <a asp-controller="Product" asp-action="Details" asp-route-id="@viewmodel.product.Id">
-                         <img src="@($"{Settings.ItemImageStorePath}/{viewmodel.product.Cover}")" alt="" class="img-fluid d-block mx-auto mb-3">
+                                        <img src="@($"{Settings.ItemImageStorePath}/{viewmodel.product.Cover}")" alt="@viewmodel.product.Name" title="@viewmodel.product.Name" class="img-fluid d-block mx-auto mb-3">
                     </a>
                     <h5><a asp-controller="Product" asp-action="Details" asp-route-id="@viewmodel.product.Id">@viewmodel.product.Name</a></h5>
                    <p><strong>@viewmodel.product.Price $</strong> </p>
@@ -133,10 +114,19 @@
                              }
                          <div>
                           @* <a asp-controller="Cart" asp-action="AddToCart" asp-route-productId ="@viewmodel.product.Id" class="btn btn-primary" id="btnCart"><i class="bi bi-cart-plus"></i></a> *@
-                                        <div>
-                                            <button class="btn btn-primary btn-add-to-cart" data-product-id="@viewmodel.product.Id">
-                                                <i class="bi bi-cart-plus"></i>
+                                        <div class="d-flex justify-content-between" style="gap:10px">
+                                            <button class="btn btn-primary btn-add-to-cart @(viewmodel.product.Quantity <= 0 ? "disabled" : "")" data-product-id="@viewmodel.product.Id">
+                                                <i class="bi bi-cart-plus fa-sm"></i>
                                             </button>
+                                            @if (viewmodel.product.Quantity <= 0)
+                                            {
+                                                <span class="mt-1 text text-danger">out of stock</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="mt-1 text text-success">Available</span>
+                                            }
+                                            
                                         </div>
 
                                     </div>

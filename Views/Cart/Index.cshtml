@@ -12,10 +12,10 @@
 }
 
 <div class="container mt-1">
-    @if (ViewData["ErrorMessage"] != null)
+    @if (TempData["ErrorMessage"] != null)
     {
         <div class="alert alert-danger">
-            @ViewData["ErrorMessage"]
+            @TempData["ErrorMessage"]
             </div>
     }
 </div>
@@ -47,8 +47,9 @@
                             <form asp-action="UpdateQuantity" method="post">
                                 <input name="productId" type="hidden" value="@cartContent.ProductId" />
                                <div style="gap:20px" class="d-flex text-center justify-content-center">
-                                    <input name="quantity" style="font-size:25px;" class="w-25" asp-for="@cartContent.Quantity" type="number" />
+                                    <input name="quantity" type="number" min="0" max="@cartContent.Product.Quantity" style="font-size:25px;" class="w-25" asp-for="@cartContent.Quantity" />
                                     <button type="submit" class="btn btn-info" style="">Add</button>
+                                    <span class="mt-2">@cartContent.Product.Quantity Entities in Stock</span>
                                </div>
                                 
                             </form>
@@ -72,16 +73,3 @@
     <partial name="_ConfirmationDeleteModal" />
 
 </div>
-@* 
-                            @section Scripts{
-                                <script>
-        function updateCart() {
-            var quantityInput = document.getElementById('quantityInput');
-            var productIdInput = document.getElementById('productIdInput');
-            var quantity = quantityInput.value;
-            var productId = productIdInput.value;
-            var updateUrl = '@Url.Action("UpdateQuantity")' + '?quantity=' + quantity + '&productId=' + productId;
-            window.location.href = updateUrl;
-        }
-        </script>
-                            } *@

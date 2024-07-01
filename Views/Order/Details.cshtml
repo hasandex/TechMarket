@@ -1,0 +1,58 @@
+﻿@model Order
+@{
+    ViewData["Title"] = "Order Details";
+}
+<div class="container">
+
+
+<table class="table" id="page">
+    <thead>
+    <th>Order ID</th>
+    <th>Order Status</th>
+    <th>Email</th>
+    <th>City</th>
+    <th>Address</th>
+    <th>Phone Number</th>
+    <th>Phone Number (optional)</th>
+    </thead>
+    <tbody>
+
+        <tr>
+            <td>@Model.Id</td>
+            <td>@Model.OrderStatus</td>
+            <td>@Model.Email</td>
+            <td>@Model.City</td>
+            <td>@Model.Address</td>
+            <td>@Model.PhoneNumber</td>
+            <td>@Model.PhoneNumber2</td>
+        </tr>
+
+    </tbody>
+</table>
+
+<div class="mt-2">
+    <h2 class="text-center">Order Content</h2>
+    <table class="table">
+        <thead>
+        <th>Product</th>
+        <th>Price</th>
+        <th>Quantity</th>
+        <th>Total Price</th>
+        </thead>
+        <tbody>
+            @foreach (var product in Model.OrderProducts)
+            {
+                <tr>
+                    <td><a asp-action="Details" asp-controller="Product" asp-route-id="@product.ProductId"> @product.Product.Name</a></td>
+                    <td>@product.Price</td>
+                    <td>@product.Quantity</td>
+                    <td>@product.TotalPrice</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <h2 class="text-danger text-center">Order Price : @Model.OrderProducts.Sum(op => op.TotalPrice)$</h2>
+     <a asp-action="Index" asp-controller="Order" class="btn btn-dark mt-2" style="color: #FFD700;">Back To Orders</a>
+</div>
+
+</div>

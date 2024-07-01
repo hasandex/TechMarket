@@ -69,6 +69,7 @@ namespace TechMarket.Controllers
             return View();
         }
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult CheckOut(Order order)
         {
             if (!ModelState.IsValid)
@@ -85,15 +86,20 @@ namespace TechMarket.Controllers
             return RedirectToAction("Index");
         }
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult UpdateQuantity(int productId, int quantity)
         {
             if (quantity <= 0)
             {
-                var cart = _cartRepo.GetCartByUserId(_userId);
-                ViewData["ErrorMessage"] = "The minimum quantity for each product is 1";
-                return View("Index", cart);
+               // var cart = _cartRepo.GetCartByUserId(_userId);
+                TempData["ErrorMessage"] = "The minimum quantity for each product is 1";
+                return RedirectToAction("Index");
             }
-            _cartRepo.UpdateCartContentQuantity(productId, quantity);
+            var isUpdated = _cartRepo.UpdateCartContentQuantity(productId, quantity);
+            if(isUpdated == -1)
+            {
+                return BadRequest();
+            }
             return RedirectToAction("Index");
         }
     }

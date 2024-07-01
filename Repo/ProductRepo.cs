@@ -18,28 +18,39 @@ namespace TechMarket.Repo
             _imageService = imageService;
             _userService = userService;
         }
+
+ 
         //this method for Admin Index
-        public int RejectProduct(int id)
+        public int ChangeProductState(int id)
         {
             var product = GetById(id);
             if (product == null)
             {
                 return -1;
             }
-            product.Status = "Rejected";
+            product.Status = "To Be Determined";
+            product.AdminMessage = null;
             return _appDbContext.SaveChanges();
         }
-        //this method for Admin Index
-        public int MakeAvailable(int id)
+        public int DoSome(string action, string? message, int productId)
         {
-            var product = GetById(id);
+            var product = GetById(productId);
             if (product == null)
             {
                 return -1;
             }
-            product.Status = "Accepted";
+            if(action == "Accept")
+            {
+                product.Status = "Accepted";
+            }
+            else if(action == "Reject")
+            {
+                product.Status = "Rejected";
+            }
+            product.AdminMessage = message;
             return _appDbContext.SaveChanges();
         }
+
 
         //this method for Admin Index
         public async Task<int> GetCountAllNewProducts()
@@ -63,7 +74,9 @@ namespace TechMarket.Repo
         //this method for Admin Index
         public async Task<IEnumerable<Product>> GetAll()
         {
-            return await _appDbContext.Products.Include(p => p.Category).AsNoTracking().ToListAsync();
+            return await _appDbContext.Products.Include(p => p.Category)
+                .Include(p=>p.User)                               
+                .AsNoTracking().ToListAsync();
         }
         //this method for User Index
         public async Task<IEnumerable<Product>> GetAll(string userId)
@@ -74,7 +87,11 @@ namespace TechMarket.Repo
         }
         public Product? GetById(int id)
         {
-            var product = _appDbContext.Products.Include(p=>p.Category).FirstOrDefault(p => p.Id == id);
+            var product = _appDbContext.Products.Include(p=>p.Category)
+                .Include(p=>p.Ratings)
+                .Include(p => p.Comments)
+                .ThenInclude(c=>c.User)
+                .FirstOrDefault(p => p.Id == id);
             if (product != null)
             {
                 return product;
@@ -134,5 +151,6 @@ namespace TechMarket.Repo
                 return 0;
             }
         }
+
     }
 }

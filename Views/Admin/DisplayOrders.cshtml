@@ -1,0 +1,36 @@
+﻿@model IEnumerable<Order>
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "Orders";
+}
+
+@if (!Model.Any())
+{
+    <div class="alert alert-warning">
+        <h3>No Orders in our system</h3>
+    </div>
+}
+else
+{
+    <table class="table" id="page">
+        <thead>
+        <th>Order Number</th>
+        <th>Email</th>
+        <th>Created Date</th>
+        <th>Details</th>
+        </thead>
+        <tbody>
+            @foreach (var order in Model.OrderBy(o=>o.OrderCreatedTime))
+            {
+                var user = await UserManager.FindByIdAsync(@order.Cart.UserId);
+                string email = user.Email;
+                <tr>
+                    <td>@order.Id</td>
+                    <td>@email</td>
+                    <td>@order.OrderCreatedTime</td>
+                    <td><a asp-controller="Admin" asp-action="DisplayOrderDetails" asp-route-orderId="@order.Id">Display</a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

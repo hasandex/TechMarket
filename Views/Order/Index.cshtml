@@ -1,0 +1,38 @@
+﻿@model IEnumerable<Order>
+
+    <div class="container">
+
+
+
+@if (!Model.Any())
+{
+    <div class="alert alert-warning">
+        <h3>No Orders were added yet!</h3>
+    </div>
+}
+else
+{
+    <table class="table" id="page">
+        <thead>
+        <th>Order Number</th>
+        <th>Email</th>
+        <th>Created Date</th>
+        <th>Details</th>
+        </thead>
+        <tbody>
+            @foreach (var order in Model)
+            {
+                var user = await UserManager.FindByIdAsync(@order.Cart.UserId);
+                string email = user.Email;
+                <tr>
+                    <td>@order.Id</td>
+                    <td>@email</td>
+                    <td>@order.OrderCreatedTime</td>
+                    <td><a asp-controller="Order" asp-action="Details" asp-route-orderId="@order.Id">Display</a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+</div>

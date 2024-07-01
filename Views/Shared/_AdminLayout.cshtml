@@ -1,121 +1,82 @@
-﻿@{
-    Layout = null;
-}
-
+﻿﻿﻿
 <!DOCTYPE html>
-
-<html>
+<html lang="en">
 <head>
-    <meta name="viewport" content="width=device-width" />
-    <title>NewLayout</title>
-    <link rel="stylesheet" href="~/bootstrap.css" />
-    <link rel="stylesheet" href="~/css/design.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+
+    <!-- Font Awesome icons (free version)-->
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <!-- Google fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css" />
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700" rel="stylesheet" type="text/css" />
+    @* BootStrap *@
+    <link href="~/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/css/bootstrap.css" rel="stylesheet" />
+
+    <!--DtataTable-->
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.8/css/dataTables.bootstrap5.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/3.0.2/css/responsive.bootstrap5.css" />
+
+    <link href="~/lib/sweetalert2/sweetalert2.min.css" rel="stylesheet" />
+
+    <link rel="stylesheet" href="~/css/admin.css" />
+    <style>
+        a:hover{
+            text-decoration:none;
+        }
+    </style>
+
 </head>
 <body>
-    <div class="menu">
-        <ul>
-            <li class="profile">
-                <div class="img-box">
-                    <img src="/assets/images/support.jpg" alt="profile">
+    <div class="main-contaier">
+
+        @* side nav bar *@
+        <nav class="sidenav list-group">
+
+            <a class="navigation-link" asp-controller="Admin" asp-action="DisplayUsers"><i class="bi bi-people fa-lg"></i> <span class="d-none d-md-inline">Users</span></a>
+            <a class="navigation-link" asp-controller="Admin" asp-action="Index"><i class="bi bi-table fa-lg"></i> <span class="d-none d-md-inline">Products</span> </a>
+            <a class="navigation-link" asp-controller="Admin" asp-action="DisplayOrders"><i class="bi bi-basket3 fa-lg"></i> <span class="d-none d-md-inline">Orders</span></a>
+            <a class="navigation-link text-danger" style="font-size:20px" asp-controller="Home" asp-action="Stock"><i class="bi bi-box-arrow-right fa-lg"></i> <span class="d-none d-md-inline">Exit</span></a>
+
+        </nav>
+        @*  upper nav bar *@
+        <div class="right-panel">
+            <nav class="nav-bar fixed-top">
+                <div class="nav-heading">Welcome @User.Identity?.Name</div>
+                <div class="nav-heading">
+                @ViewData["Title"]
                 </div>
-                <h2>hasan</h2>
-            </li>
-
-
-            <li>
-                <a asp-area="Identity" asp-page="/Account/Manage/Index">
-                    <i class="fas fa-home"></i>
-                    <span>Profile</span>
-                </a>
-            </li>
-            <li>
-                <a asp-controller="Admin" asp-action="DisplayUsers">
-                    <i class="fas fa-user-group"></i>
-                    <span>clients</span>
-                </a>
-            </li>
-            <li>
-                <a asp-controller="Admin" asp-action="DisplayProducts">
-                    <i class="fas fa-pen"></i>
-                    <span>posts</span>
-                </a>
-            </li>
-            <li>
-                <a asp-controller="Admin" asp-action="DisplayOrders">
-                    <i class="fas fa-table"></i>
-                    <span>Orders</span>
-                </a>
-            </li>
-            <li>
-                <a href="#">
-                    <i class="fas fa-cog"></i>
-                    <span>settings</span>
-                </a>
-            </li>
-            <li class="logout">
-                <a asp-controller="Home" asp-action="HomePage">
-                    <i class="fas fa-sign-out"></i>
-                    <span>Exit</span>
-                </a>
-            </li>
-        </ul>
+                <div class="nav-actions">
+                    <a href="/Identity/Account/Manage/Index" class="navigation-link"><i class="bi bi-gear"></i> Manage account</a>
+                </div>
+            </nav>
+            <div class="content container">
+                @RenderBody()
+            </div>
+        </div>
     </div>
 
-    <div class="content">
-        <div class="title-info">
-            <span>dashboard</span>
-            <i class="fas fa-chart-bar"></i>
-        </div>
 
-        <div class="data-info">
-            <div class="box">
-                <i class="fas fa-user"></i>
-                <div class="data">
-                    <p>User</p>
-                    <span>@ViewBag.TotalUsers</span>
-                </div>
-            </div>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap core JS-->
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/lib/sweetalert2/sweetalert2.min.js"></script>
+    <!--DtataTable-->
+    <script src="https://cdn.datatables.net/2.0.8/js/dataTables.js "></script>
+    <script src="https://cdn.datatables.net/2.0.8/js/dataTables.bootstrap5.js"></script>
+    <script src="https://cdn.datatables.net/responsive/3.0.2/js/dataTables.responsive.js "></script>
+    <script>
+        $(document).ready(function () {
+            $('#page').DataTable({ responsive: true });
+        });
+    </script>
 
-            <div class="box">
-                <i class="fas fa-pen"></i>
-                <div class="data">
-                    <p>Posts</p>
-                    <span>@ViewBag.TotalProducts</span>
-                </div>
-            </div>
-
-            <div class="box">
-                <i class="fas fa-table"></i>
-                <div class="data">
-                    <p>Orders</p>
-                    <span>10</span>
-                </div>
-            </div>
-
-
-            <div class="box">
-                <i class="fas fa-dollar"></i>
-                <div class="data">
-                    <p>Revenue</p>
-                    <span>10</span>
-                </div>
-            </div>
-
-        </div>
-
-        <div class="title-info">
-            <span>Products</span>
-            <i class="fas fa-table"></i>
-        </div>
-        <div>
-            @RenderBody()
-        </div>
-       
-
-
-    </div>
-
-    <script src="~/bootstrap.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
 </body>
+
 </html>
+

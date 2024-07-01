@@ -4,6 +4,7 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.Runtime.Versioning;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
@@ -58,6 +59,15 @@ namespace TechMarket.Areas.Identity.Pages.Account.Manage
             [Phone]
             [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
+
+            [Display(Name = "Profilr Picture")]
+            public byte[]? ProfilePicture { get; set; }
+            [Required]
+            [Display(Name = "First Name")]
+            public string FName { get; set;}
+            [Required]
+            [Display(Name = "Last Name")]
+            public string LName { get; set;}
         }
 
         private async Task LoadAsync(ApplicationUser user)
@@ -69,7 +79,10 @@ namespace TechMarket.Areas.Identity.Pages.Account.Manage
 
             Input = new InputModel
             {
-                PhoneNumber = phoneNumber
+                PhoneNumber = phoneNumber,
+                ProfilePicture = user.ProfilePicture,
+                FName = user.FName,
+                LName = user.LName,
             };
         }
 
@@ -109,7 +122,28 @@ namespace TechMarket.Areas.Identity.Pages.Account.Manage
                     return RedirectToPage();
                 }
             }
-
+            if(Request.Form.Files.Count > 0)
+            {
+                var file = Request.Form.Files.FirstOrDefault();
+                using (var dataStream = new MemoryStream())
+                {
+                    await file.CopyToAsync(dataStream);
+                    user.ProfilePicture = dataStream.ToArray();
+                }
+                await _userManager.UpdateAsync(user);
+            }
+            var Fname = user.FName;
+            if(Input.FName != Fname)
+            {
+                user.FName = Input.FName;
+                await _userManager.UpdateAsync(user);    
+            }
+            var Lname = user.LName;
+            if (Input.LName != Lname)
+            {
+                user.LName = Input.LName;
+                await _userManager.UpdateAsync(user);
+            }
             await _signInManager.RefreshSignInAsync(user);
             StatusMessage = "Your profile has been updated";
             return RedirectToPage();

@@ -28,23 +28,20 @@
 }
 else
 {
-        <table style="border-collapse: separate;
-        border-spacing:5px;" id="page">
+        <table class="table" id="page">
         <thead>
                 <th>Product</th>
-                <th>Category</th>
-                <th>Price</th>
                 <th>Cover</th>
                 <th>Actions</th>
                 <th>Status</th>
+                <th>Admin Message</th>
         </thead>
         <tbody>
             @foreach (var product in Model)
             {
                 <tr>
                     <td>@product.Name</td>
-                    <td>@product.Category.Name</td>
-                    <td>@product.Price $</td>
+                   
                     <td>
                         <img src="@($"{Settings.ItemImageStorePath}/{@product.Cover}")" class="rounded" style="width:100px;height:100px;" />
                     </td>
@@ -74,20 +71,19 @@ else
                             @product.Status
                         </td>
                     }
+                        <td>
+                            <p style="word-break: break-all;">@product.AdminMessage</p>
+                        </td>
                 </tr>
             }
         </tbody>
     </table>
 }
 </div>
+
+
 @section Scripts {
     <script src="~/js/delete-product.js"></script>
 }
-<style>
-    th, td {
-        color:white;
-        background-color: #123;
-        border-radius: 8px;
-        align-items:center;
-    }
-</style>
+
+

@@ -12,8 +12,7 @@ namespace TechMarket.Repo.IRepo
         int Create(CreateProductViewModel viewModel);
         int Update(UpdateProductViewModel viewModel);
         int Delete(int id);
-        int MakeAvailable(int id);
-
-        int RejectProduct(int id);
+        int ChangeProductState(int id);
+        int DoSome(string action,string? message, int productId);
     }
 }

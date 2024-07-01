@@ -26,7 +26,7 @@
             <div id="items" class="navbar-collapse collapse">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Stock">Stock</a>
+                        <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Stock">Shop</a>
                     </li>
                   
                     <li class="nav-item">
@@ -41,7 +41,7 @@
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <li><a class="dropdown-item" asp-controller="Product" asp-action="Index">Products</a></li>
                             <li><a class="dropdown-item" asp-controller="Cart" asp-action="Index">Cart</a></li>
-                                <li><a class="dropdown-item" href="#">Orders</a></li>
+                            <li><a class="dropdown-item" asp-controller="Order" asp-action="Index">Orders</a></li>
                         </ul>
                     </li>
                     }
@@ -61,14 +61,14 @@
         </nav>
     </header>
     <div id="popup-container" class="popup-container">
-        <div class="popup-content col-6">
+        <div class="popup-content col-10" style="width:75%">
             <span class="close-button">&times;</span>
             <h2>About</h2>
             <p>Teck Market is a leading online platform that offers a wide range of high-quality products at competitive prices. From household essentials to the latest electronics, we have it all. Our user-friendly interface and fast, secure delivery make shopping a breeze.</p>
         </div>
     </div>
     <div class="">
-        <main role="main" class="pb-3 ">
+        <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
@@ -81,11 +81,10 @@
                     <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
                         <!-- Content -->
                         <h6 class="text-uppercase fw-bold mb-4">
-                            <i class="fas fa-gem me-3"></i>Company name
+                            <i class="fas fa-gem me-3"></i>Tech Market
                         </h6>
                         <p>
-                            Here you can use rows and columns to organize your footer content. Lorem ipsum
-                            dolor sit amet, consectetur adipisicing elit.
+                            Teck Market is a leading online platform that offers a wide range of high-quality products at competitive prices.
                         </p>
                     </div>
                     <!-- Grid column -->
@@ -104,7 +103,7 @@
                             <a class="text-reset" asp-controller="Home" asp-action="Stock" asp-route-categoryName="Tablet">Tablet</a>
                         </p>
                         <p>
-                            <a class="text-reset" asp-controller="Home" asp-action="Stock" asp-route-categoryName="Laptop">Laptop</a>
+                            <a class="text-reset" asp-controller="Home" asp-action="Stock" asp-route-categoryName="Mobile">Mobile</a>
                         </p>
                        
                     </div>
@@ -116,13 +115,13 @@
                             Useful links
                         </h6>
                         <p>
-                            <a href="#!" class="text-reset">Pricing</a>
+                            <a asp-controller="Product" asp-action="Index" class="text-reset">My Products</a>
                         </p>
                         <p>
-                            <a href="#!" class="text-reset">Settings</a>
+                            <a asp-area="Identity" asp-page="/Account/Manage/Index" class="text-reset">Settings</a>
                         </p>
                         <p>
-                            <a href="#!" class="text-reset">Orders</a>
+                            <a href="#!" class="text-reset">Feedback</a>
                         </p>
                         <p>
                             <a href="#!" id="about-btn" class="text-reset">About</a>
@@ -146,22 +145,13 @@
                 <!-- Grid row -->
             </div>
             <div class="text-center">
-                <a href="" class="me-4 text-reset">
+                <a href="https://www.facebook.com/ifisaysomethingimeanit" target="_blank" class="me-4 text-reset">
                     <i class="fab fa-facebook-f"></i>
                 </a>
-                <a href="" class="me-4 text-reset">
-                    <i class="fab fa-twitter"></i>
-                </a>
-                <a href="" class="me-4 text-reset">
-                    <i class="fab fa-google"></i>
-                </a>
-                <a href="" class="me-4 text-reset">
-                    <i class="fab fa-instagram"></i>
-                </a>
-                <a href="" class="me-4 text-reset">
+                <a href="https://www.linkedin.com/in/hasan-kassab-463881231/" target="_blank" class="me-4 text-reset">
                     <i class="fab fa-linkedin"></i>
                 </a>
-                <a href="" class="me-4 text-reset">
+                <a href="https://github.com/hasandex/" target="_blank" class="me-4 text-reset">
                     <i class="fab fa-github"></i>
                 </a>
             </div>
@@ -179,10 +169,12 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/lib/sweetalert2/sweetalert2.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-    <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/2.0.8/js/dataTables.js "></script>
+    <script src="https://cdn.datatables.net/2.0.8/js/dataTables.bootstrap5.js"></script>
+    <script src="https://cdn.datatables.net/responsive/3.0.2/js/dataTables.responsive.js "></script>
     <script>
         $(document).ready(function () {
-            $('#page').DataTable();
+            $('#page').DataTable({ responsive: true });
         });
     </script>
     <script>

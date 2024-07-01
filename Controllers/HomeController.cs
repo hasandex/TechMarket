@@ -79,6 +79,7 @@ namespace TechMarket.Controllers
             return View();
         }
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult ContactMail(Contact contact)
         {
             return View();

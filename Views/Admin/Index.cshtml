@@ -1,88 +1,56 @@
 ﻿@model IEnumerable<Product>
 @{
-    ViewData["Title"] = "Admin";
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "Products";
 }
-<div class="mt-2">
+
 @if (!Model.Any())
 {
     <div class="alert alert-warning">
-        <h3>No Products in out system</h3>
+        <h3>No Products in our system</h3>
     </div>
 }
 else
 {
-    <table class="table table-hover" id="page">
-      <thead>
-          <tr>
-              <th scope="col">Count</th>
-              <th scope="col">User</th>
-              <th scope="col">Product Name</th>
-              <th scope="col">Price</th>
-                <th scope="col" style="padding-left:45px;">Cover</th>
-              <th scope="col">Details</th>
-                <th scope="col" style="padding-left:45px;">Approve</th>
-                <th scope="col" style="padding-left:45px;">Reject</th>
-              <th scope="col">Status</th>
-          </tr>
-      </thead>
-      <tbody>
-          @{
-              var count = 0;
-              }
-          @foreach (var product in Model)
+    <table class="table" id="page">
+        <thead>
+        <th>User</th>
+        <th>Product</th>
+        <th>Status</th>
+
+        </thead>
+        <tbody>
+            @foreach (var product in Model)
             {
-                var isAvailable = product.Status;
-                count = count + 1;
-                var userInfo = await UserManager.FindByIdAsync(product.UserId);
-                var index = userInfo.UserName.IndexOf('@');
-                var userName = userInfo.UserName.Substring(0, index);
-                @* <tr class="@(isAvailable == "To Be Determined" ? "bg-dark text-white" : "")"> *@
-                    <tr class="bg-dark text-white">
-                    <td>@count</td>
-                    <td>@userName</td>
-                    <td>@product.Name</td>
-                    <td>@product.Price</td>
-                    <td>
-                        <img src="@($"{Settings.ItemImageStorePath}/{@product.Cover}")" class="rounded" style="width:100px;height:100px;" />
-                    </td>
+                <tr>
+                    <td>@product.User.FName</td>
                     <td>
                         <a asp-controller="Product" asp-action="Details" asp-route-id="@product.Id">
-                            Show More
+                            @product.Name
                         </a>
                     </td>
-                    <td>
-                        <a class="btn btn-outline-info" asp-action="MakeProductAvailable" asp-route-id="@product.Id">
-                            Approve
-                        </a>
-                    </td>
-                    <td>
-                        <a class="btn btn-outline-danger" asp-action="RejectProduct" asp-route-id="@product.Id">
-                            Reject
-                        </a>
-                    </td>
+                    @if (product.Status == "Accepted")
+                    {
+                        <td class="text-success">
+                            @product.Status
+                        </td>
+                    }
+                    else if (product.Status == "Rejected")
+                    {
+                        <td class="text-danger">
+                            @product.Status
+                        </td>
+                    }
+                    else
+                    {
+                        <td>
+                            @product.Status
+                        </td>
+                    }
 
-                    @if (isAvailable == "Accepted")
-                    {
-                        <td class="text text-info">
-                            Is Available
-                        </td>
-                    }
-                    else if (isAvailable == "To Be Determined")
-                    {
-                        <td class="text text-white">
-                            To Be Determined
-                        </td>
-                    }
-                    else if (isAvailable == "Rejected")
-                    {
-                        <td class="text text-danger">
-                            Rejected
-                        </td>
-                    }
+
                 </tr>
             }
-      </tbody>
-      
-  </table>
+        </tbody>
+    </table>
 }
-</div>

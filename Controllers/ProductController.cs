@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis;
+using TechMarket.Models;
 using TechMarket.Repo.IRepo;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
@@ -14,17 +16,20 @@ namespace TechMarket.Controllers
         private readonly IUserService _userService;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IRatingRepo _ratingRepo;
+        private readonly ICommentRepo _commentRepo;
         public ProductController(IProductRepo productRepo,
             ICategoryRepo categoryRepo,
             IUserService userService,
             UserManager<ApplicationUser> userManager,
-            IRatingRepo ratingRepo)
+            IRatingRepo ratingRepo,
+            ICommentRepo commentRepo)
         {
             _productRepo = productRepo;
             _categoryRepo = categoryRepo;
             _userService = userService;
             _userManager = userManager;
             _ratingRepo = ratingRepo;
+            _commentRepo = commentRepo;
         }
         public async Task<IActionResult> Index()
         {
@@ -40,6 +45,7 @@ namespace TechMarket.Controllers
             return View(viewModel);
         }
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Create(CreateProductViewModel viewModel)
         {
             if (!ModelState.IsValid)
@@ -77,6 +83,7 @@ namespace TechMarket.Controllers
             return View(viewModel);
         }
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Update(UpdateProductViewModel viewModel)
         {
             var item = _productRepo.GetById(viewModel.Id);
@@ -123,15 +130,6 @@ namespace TechMarket.Controllers
             ViewBag.productRate = productRate;
             return View(product);
         }
-        public IActionResult RateProduct(string rating, int productId)
-        {
-           var isRated = _ratingRepo.RateProduct(Int32.Parse(rating),productId,_userService.GetUserId());
-           if(isRated < 0)
-            {
-                return BadRequest();
-            }
-            int id = productId;
-            return RedirectToAction(controllerName:"Home",actionName:"Stock");
-        }
+     
     }
 }

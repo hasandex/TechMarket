@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<UserFormViewModel>
 @{
     Layout = "_AdminLayout";
-    ViewData["Title"] = "Display all users";
+    ViewData["Title"] = "Users";
 }
 
 @if (!Model.Any())
@@ -12,7 +12,7 @@
 }
 else
 {
-    <table>
+    <table class="table" id="page">
         <thead>
             <th>User Name</th>
             <th>Email</th>
@@ -26,7 +26,11 @@ else
                     <td>@user.UserName</td>
                     <td>@user.Email</td>
                     <td>@string.Join(" , ", user.Roles.ToList())</td>                 
-                    <td><a asp-controller="Admin" asp-action="ManageRoles" asp-route-userId="@user.Id"><i class="fas fa-pen"></i></a> </td>
+                    <td>
+                        <a asp-controller="Admin" asp-action="addRoles" asp-route-userId="@user.Id" class="btn btn-sm btn-success">
+                            <i class="bi bi-pencil"></i>
+                        </a>
+                    </td>
                 </tr>
             }
         </tbody>
