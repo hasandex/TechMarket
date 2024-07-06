@@ -9,3 +9,6 @@ global using TechMarket.ViewModel;
 global using TechMarket.Models;
 global using TechMarket.Repo.IRepo;
 global using TechMarket.Services;
+global using System.Net.Mail;
+global using System.Net;
+global using Microsoft.AspNetCore.Identity.UI.Services;

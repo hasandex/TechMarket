@@ -27,19 +27,19 @@ namespace TechMarket.Controllers
             _emailSender = emailSernder;
         }
 
-        public async Task<IActionResult> Stock(string? seachName, string? categoryName, int pg = 1)
+        public async Task<IActionResult> Stock(string? searchName, string? categoryName, int pg = 1)
         {
             var products = await _productRepo.GetAllAvailable();
-            if (!string.IsNullOrEmpty(seachName))
+            if (!string.IsNullOrEmpty(searchName))
             {
-                products = products.Where(p => p.Name.ToLower().Contains(seachName.ToLower())
-                    || p.Description.ToLower().Contains(seachName.ToLower())).ToList();
+                products = products.Where(p => p.Name.ToLower().Contains(searchName.ToLower())
+                    || p.Description.ToLower().Contains(searchName.ToLower())).ToList();
             }
             else if (categoryName != null)
             {
                 products = products.Where(p => p.Category.Name.ToLower() == categoryName.ToLower()).ToList();
             }
-            ViewBag.seachName = seachName;
+            ViewBag.seachName = searchName;
             ViewBag.categories = _categoryRepo.GetCategories();
             //Pagenatio
             const int pageSize = 8;
