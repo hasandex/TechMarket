@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using TechMarket.Models;
 using TechMarket.Repo;
 
 namespace TechMarket.Controllers
 {
+    [Authorize]
     public class UserController : Controller
     {
         private readonly ICommentRepo _commentRepo;
@@ -30,11 +32,11 @@ namespace TechMarket.Controllers
             _commentRepo.Add(comment);
             return RedirectToAction("Details", "Product", new { id = comment.ProductId });
         }
-        public IActionResult RemoveComment(int commentId)
-        {
-            _commentRepo.RemoveComment(commentId);
-            return RedirectToAction("Details", "Product", new { id = commentId });
-        }
+        //public IActionResult RemoveComment(int commentId)
+        //{
+        //    _commentRepo.RemoveComment(commentId);
+        //    return RedirectToAction("Details", "Product", new { id = commentId });
+        //}
         public IActionResult RateProduct(string rating, int productId)
         {
             var isRated = _ratingRepo.RateProduct(Int32.Parse(rating), productId, _userService.GetUserId());
